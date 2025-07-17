@@ -1,31 +1,26 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 
 const images = [
   '/assets/quotes/qm1.svg',
   // '/assets/quotes/qm2.svg',
-  // Tambahin lebih banyak jika ada
 ];
 
 export default function MoodQuotes() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const currentImage = images[currentIndex];
 
   const handleRandom = () => {
     const nextIndex = (currentIndex + 1) % images.length;
     setCurrentIndex(nextIndex);
   };
 
-  const currentImage = images[currentIndex];
-
   return (
     <div className="bg-[#FFF9C4] rounded-xl p-4 flex flex-col items-center space-y-4">
-      <Image
+      <img
         src={currentImage}
         alt="Mood Quote"
-        width={300}
-        height={300}
         className="w-full max-w-xs rounded"
       />
 
@@ -42,9 +37,30 @@ export default function MoodQuotes() {
             Share temen lo
           </button>
           <div className="absolute left-0 mt-2 bg-white rounded shadow hidden group-hover:flex flex-col z-50">
-            <a href={`https://wa.me/?text=${encodeURIComponent('Cek ini deh! selfify.id')}`} className="px-4 py-2 hover:bg-gray-100">WhatsApp</a>
-            <a href="https://x.com/intent/tweet?text=Selfify%20Quotes%20%F0%9F%92%9B%0Aselfify.id" className="px-4 py-2 hover:bg-gray-100">X</a>
-            <a href="https://www.instagram.com/" className="px-4 py-2 hover:bg-gray-100">Instagram</a>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent('Cek ini deh! selfify.id')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 hover:bg-gray-100"
+            >
+              WhatsApp
+            </a>
+            <a
+              href="https://x.com/intent/tweet?text=Selfify%20Quotes%20🟡%0Aselfify.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 hover:bg-gray-100"
+            >
+              X
+            </a>
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 hover:bg-gray-100"
+            >
+              Instagram
+            </a>
           </div>
         </div>
 
