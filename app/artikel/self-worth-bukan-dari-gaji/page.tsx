@@ -10,14 +10,12 @@ export default function ArtikelPage() {
     <div className="max-w-3xl mx-auto px-4 py-8 text-gray-800">
       {/* Thumbnail */}
       <div className="mb-6">
-        <Image
-          src="/assets/artikel/self-worth.webp"
-          alt="Self-Worth Thumbnail"
-          width={800}
-          height={500}
-          className="rounded-xl object-cover w-full"
-        />
-      </div>
+  <img
+    src="/assets/artikel/self-worth.webp"
+    alt="Self-Worth Thumbnail"
+    className="rounded-xl object-cover w-full"
+  />
+</div>
 
       {/* Judul */}
       <h1 className="text-3xl font-bold text-yellow-500 mb-2">
