@@ -5,7 +5,6 @@ import QuizPopuler from '../components/QuizPopuler';
 import ConfessSlider from '../components/ConfessSlider';
 import MoodQuotes from '../components/MoodQuotes';
 import LoungeLock from '../components/LoungeLock';
-import ArtikelBooster from '../components/ArtikelBooster';
 import BottomNav from '../components/BottomNav';
 
 export default function Home() {
@@ -61,9 +60,7 @@ export default function Home() {
             Closed
           </div>
         </div>
-        <button className="mt-4 bg-yellow-400 text-blue-900 font-bold px-6 py-2 rounded-xl border border-blue-900">
-          Artikel Booster
-        </button>
+        {/* Tombol Artikel Booster dihapus */}
       </section>
 
       {/* Artikel List */}
@@ -90,9 +87,9 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <button className="block w-full bg-yellow-400 text-blue-900 font-bold mt-6 py-2 rounded-xl">
+        <a href="/artikel/kategori" className="block w-full bg-yellow-400 text-blue-900 font-bold mt-6 py-2 rounded-xl text-center hover:bg-yellow-300 transition">
           Lihat Semua Artikel
-        </button>
+        </a>
       </section>
 
       {/* Bottom Nav */}
