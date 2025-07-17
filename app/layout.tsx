@@ -1,5 +1,6 @@
 // app/layout.tsx
 import '../styles/globals.css';
+import BottomNav from '@/components/BottomNav';
 import { ReactNode } from 'react';
 
 export const metadata = {
@@ -10,7 +11,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body className="font-sans bg-white text-gray-900 antialiased">
+        {children}
+        <BottomNav />
+      </body>
     </html>
   );
 }
