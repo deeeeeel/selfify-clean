@@ -1,64 +1,78 @@
+// app/artikel/kategori/[slug]/page.tsx
 import Link from 'next/link';
 import Image from 'next/image';
 
-const dummyData = {
+// Dummy data per kategori; ganti dengan fetch nyata bila diperlukan
+const articlesByCategory: Record<string, Array<{ title: string; slug: string; excerpt: string; thumbnail: string }>> = {
   'mental-health': [
     {
       title: 'Self-Worth Lo Bukan dari Gaji',
       slug: 'self-worth-bukan-dari-gaji',
-      excerpt: 'Nilai diri lo nggak ditentuin angka di slip gaji. Yuk bahas kenapa self-worth itu harus datang dari dalam...',
-      thumbnail: '/assets/artikel/self-worth.jpg',
+      excerpt: 'Nilai diri lo nggak ditentuin angka di slip gaji. Yuk bahas kenapa self-worth itu harus datang dari dalam.',
+      thumbnail: '/assets/artikel/self-worth.webp',
     },
-    // Tambah artikel lain di sini
   ],
-  // Tambah kategori lain di sini
+  'survive-mode': [
+    {
+      title: 'Lo Capek Jiwa Tapi Masih Ketawa?',
+      slug: 'lo-capek-jiwa-tapi-masih-ketawa',
+      excerpt: 'Kadang kita keliatan oke, tapi dalamnya ambyar. Artikel ini buat lo yang suka pura-pura kuat.',
+      thumbnail: '/assets/artikel/lo-capek-jiwa-tapi-masih-ketawa.webp',
+    },
+  ],
+  'character': [
+    // tambahkan artikel kategori Character
+  ],
+  'relationship': [
+    // tambahkan artikel kategori Relationship
+  ],
+  'self-reflection': [
+    // tambahkan artikel kategori Self Reflection
+  ],
+  'momomoney': [
+    // tambahkan artikel kategori Momomoney
+  ],
+  'life-phase': [
+    // tambahkan artikel kategori Life Phase
+  ],
 };
 
-export default function KategoriPage({ params }: { params: { slug: string } }) {
-  const slug = params.slug;
-  const articles = dummyData[slug] || [];
+export const metadata = ({ params }: { params: { slug: string } }) => ({
+  title: `Kategori: ${params.slug.replace('-', ' ')}`,
+  description: `Daftar artikel pada kategori ${params.slug.replace('-', ' ')}`,
+});
+
+export default function CategoryPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  const articles = articlesByCategory[slug] || [];
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* Logo */}
-      <div className="flex items-center justify-center py-6">
-        <Link href="/">
-          <Image
-            src="/assets/logo-selfify.svg"
-            alt="Logo Selfify"
-            width={160}
-            height={40}
-          />
-        </Link>
-      </div>
-
-      {/* Judul */}
-      <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-yellow-500 capitalize">
-          Artikel: {slug.replace('-', ' ')}
-        </h1>
-      </div>
-
-      {/* Daftar Artikel */}
-      <div className="grid gap-6 px-6 md:grid-cols-2 max-w-5xl mx-auto">
-        {articles.map((article, index) => (
-          <Link
-            href={`/artikel/${article.slug}`}
-            key={index}
-            className="bg-blue-50 rounded-xl p-4 shadow hover:shadow-md transition"
-          >
-            <Image
-              src={article.thumbnail}
-              alt={article.title}
-              width={500}
-              height={300}
-              className="rounded-lg mb-4"
-            />
-            <h2 className="text-lg font-semibold text-blue-700">{article.title}</h2>
-            <p className="text-sm text-gray-700 mt-1">{article.excerpt}</p>
-          </Link>
-        ))}
-      </div>
+    <div className="min-h-screen px-4 py-8 bg-white font-sans">
+      <h1 className="text-2xl font-bold text-center mb-6 capitalize">Kategori: {slug.replace('-', ' ')}</h1>
+      {articles.length > 0 ? (
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+          {articles.map((art) => (
+            <Link
+              key={art.slug}
+              href={`/artikel/${art.slug}`}
+              className="bg-white rounded-xl shadow hover:shadow-md transition p-4"
+            >
+              <Image
+                src={art.thumbnail}
+                alt={art.title}
+                width={500}
+                height={300}
+                className="rounded-lg object-cover mb-4"
+                unoptimized
+              />
+              <h2 className="text-lg font-semibold text-blue-700">{art.title}</h2>
+              <p className="text-sm text-gray-700 mt-1">{art.excerpt}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-600 mt-8">Belum ada artikel di kategori ini.</p>
+      )}
     </div>
   );
 }
