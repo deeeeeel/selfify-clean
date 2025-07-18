@@ -1,60 +1,29 @@
-'use client';
-
+// app/quiz/page.tsx (Quiz Listing Page)
 import Link from 'next/link';
+import { fetchQuizzes } from '@/lib/wpClient';
 
-const kategoriQuiz = [
-  {
-    icon: '🧠',
-    title: 'Mental Health',
-    desc: 'Refleksi kondisi mental & emosimu.',
-    href: '/quiz/q1',
-  },
-  {
-    icon: '💼',
-    title: 'Survive Mode',
-    desc: 'Tentang burnout, kerja, dan realita dewasa.',
-    href: '/quiz/q2',
-  },
-  {
-    icon: '🎭',
-    title: 'Character',
-    desc: 'Kenali tipe kepribadian dan gaya lo.',
-    href: '/quiz/q3',
-  },
-  {
-    icon: '🔍',
-    title: 'Life Reflection',
-    desc: 'Lagi di fase mana? Lagi mikirin apa?',
-    href: '/quiz/q4',
-  },
-  // Tambahin kategori lain di sini nanti
-];
+export const metadata = {
+  title: 'Quiz – Selfify',
+  description: 'Kumpulkan quiz interaktif untuk refleksi diri dan self-discovery.',
+};
 
-export default function QuizKategoriPage() {
+export default async function QuizPage() {
+  const quizzes = await fetchQuizzes();
+
   return (
-    <div className="min-h-screen p-4">
-      <h1 className="text-xl font-bold mb-6 text-blue-700 text-center">
-        Pilih Kategori Quiz Lo 🔎
-      </h1>
-      <div className="grid gap-4">
-        {kategoriQuiz.map((item, i) => (
-          <div key={i} className="bg-white border rounded-xl shadow p-4 flex justify-between items-center">
-            <div className="flex gap-3 items-center">
-              <div className="text-3xl">{item.icon}</div>
-              <div>
-                <h3 className="font-bold text-blue-700">{item.title}</h3>
-                <p className="text-sm text-gray-500">{item.desc}</p>
-              </div>
-            </div>
-            <Link
-              href={item.href}
-              className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-700"
-            >
-              Lihat Quiz
-            </Link>
-          </div>
+    <main className="min-h-screen bg-white p-6">
+      <h1 className="text-3xl font-bold mb-6">Quiz Populer</h1>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {quizzes.map((q: any) => (
+          <Link
+            key={q.slug}
+            href={`/quiz/${q.slug}`}
+            className="block bg-white rounded-lg shadow hover:shadow-lg transition p-4"
+          >
+            <h2 className="text-xl font-semibold mb-2">{q.title}</h2>
+          </Link>
         ))}
       </div>
-    </div>
+    </main>
   );
 }

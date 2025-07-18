@@ -1,72 +1,73 @@
-import Link from 'next/link'
-import Image from 'next/image'
+// app/artikel/page.tsx (Article Listing Page)
+import Link from 'next/link';
+import Image from 'next/image';
+import { fetchArticles } from '@/lib/wpClient';
 
 export const metadata = {
   title: 'Artikel – Selfify',
-  description: 'Kumpulan artikel refleksi diri, mental health, dan life phase dari Selfify.',
-}
+  description: 'Daftar artikel Selfify yang bisa kamu jelajahi untuk refleksi diri.',
+};
 
-const articles = [
-  {
-    title: 'Self-Worth Lo Bukan dari Gaji',
-    slug: 'self-worth-bukan-dari-gaji',
-    excerpt:
-      'Nilai diri lo nggak ditentuin angka di slip gaji. Yuk bahas kenapa self-worth itu harus datang dari dalam.',
-    thumbnail: '/assets/artikel/self-worth.webp',
-  },
-  {
-    title: 'Lo Capek Jiwa Tapi Masih Ketawa?',
-    slug: 'lo-capek-jiwa-tapi-masih-ketawa',
-    excerpt:
-      'Kadang kita keliatan oke, tapi dalamnya ambyar. Artikel ini buat lo yang suka pura-pura kuat.',
-    thumbnail: '/assets/artikel/lo-capek-jiwa-tapi-masih-ketawa.webp',
-  },
-  {
-    title: 'Self Check-in Buat Mulai Hari',
-    slug: 'self-check-in-buat-mulai-hari',
-    excerpt:
-      'Sebelum ngadepin dunia, kenalan dulu sama diri lo sendiri tiap pagi.',
-    thumbnail: '/assets/artikel/self-check-in-buat-mulai-hari.webp',
-  },
-  {
-    title: 'Kenapa Kita Sering Ngerasa Kosong?',
-    slug: 'kenapa-kita-sering-ngerasa-kosong',
-    excerpt:
-      'Bukan lo doang kok yang ngerasa hampa — ini alasannya.',
-    thumbnail: '/assets/artikel/kenapa-kita-sering-ngerasa-kosong.webp',
-  },
-]
+export default async function ArtikelPage() {
+  const articles = await fetchArticles();
 
-export default function ArtikelIndexPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <h1 className="flex items-center gap-2 text-2xl font-bold text-blue-700 mb-6">
-        <span className="text-yellow-500">📖</span>
-        Artikel Booster
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {articles.map((art) => (
+    <main className="min-h-screen bg-white p-6">
+      <h1 className="text-3xl font-bold mb-6">Artikel Terbaru</h1>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {articles.map((art: any) => (
           <Link
-            href={`/artikel/${art.slug}`}
             key={art.slug}
-            className="flex gap-4 bg-white rounded-xl shadow hover:shadow-md transition p-4"
+            href={`/artikel/${art.slug}`}
+            className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
           >
-            <Image
-              src={art.thumbnail}
-              alt={art.title}
-              width={120}
-              height={80}
-              className="rounded-lg object-cover"
-            />
-            <div>
-              <h2 className="text-lg font-semibold text-blue-700">
-                {art.title}
-              </h2>
-              <p className="text-sm text-gray-700 mt-1">{art.excerpt}</p>
+            {art.featuredImage?.node?.sourceUrl && (
+              <Image
+                src={art.featuredImage.node.sourceUrl}
+                alt={art.title}
+                width={400}
+                height={250}
+                className="w-full object-cover"
+                unoptimized
+              />
+            )}
+            <div className="p-4">
+              <h2 className="text-xl font-semibold mb-2">{art.title}</h2>
+              <p className="text-gray-600 text-sm line-clamp-3">{art.excerpt}</p>
             </div>
           </Link>
         ))}
       </div>
-    </div>
-  )
+    </main>
+  );
+}
+
+// app/quiz/page.tsx (Quiz Listing Page)
+import Link from 'next/link';
+import { fetchQuizzes } from '@/lib/wpClient';
+
+export const metadata = {
+  title: 'Quiz – Selfify',
+  description: 'Kumpulkan quiz interaktif untuk refleksi diri dan self-discovery.',
+};
+
+export default async function QuizPage() {
+  const quizzes = await fetchQuizzes();
+
+  return (
+    <main className="min-h-screen bg-white p-6">
+      <h1 className="text-3xl font-bold mb-6">Quiz Populer</h1>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {quizzes.map((q: any) => (
+          <Link
+            key={q.slug}
+            href={`/quiz/${q.slug}`}
+            className="block bg-white rounded-lg shadow hover:shadow-lg transition p-4"
+          >
+            <h2 className="text-xl font-semibold mb-2">{q.title}</h2>
+          </Link>
+        ))}
+      </div>
+    </main>
+  );
 }
