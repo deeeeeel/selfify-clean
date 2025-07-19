@@ -1,73 +1,81 @@
-import Link from 'next/link';
+// app/artikel/kategori/page.tsx
+'use client';
 
-export const metadata = {
-  title: 'Pilih Kategori Artikel',
-  description: 'Daftar kategori artikel Selfify',
-};
+import React, { useState, useEffect } from 'react';
 
-const categories = [
-  { name: 'Mental Health', slug: 'mental-health' },
-  { name: 'Survive Mode', slug: 'survive-mode' },
-  { name: 'Character', slug: 'character' },
-  { name: 'Relationship', slug: 'relationship' },
-  { name: 'Self Reflection', slug: 'self-reflection' },
-  { name: 'Momomoney', slug: 'momomoney' },
-  { name: 'Life Phase', slug: 'life-phase' },
-];
+interface Category {
+  id: number;
+  slug: string;
+  name: string;
+  count: number;
+}
 
-export default function KategoriIndex() {
+interface Article {
+  id: number;
+  title: { rendered: string };
+  link: string;
+  date: string;
+}
+
+const API_BASE = process.env.NEXT_PUBLIC_WP_API_URL!;
+
+export default function CategoryPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  // Fetch all categories
+  useEffect(() => {
+    fetch(`${API_BASE}/categories`)
+      .then(res => res.json())
+      .then((data: Category[]) => setCategories(data));
+  }, []);
+
+  // Fetch articles when a category is selected
+  useEffect(() => {
+    if (selectedCategory) {
+      fetch(`${API_BASE}/posts?categories=${selectedCategory.id}`)
+        .then(res => res.json())
+        .then((data: Article[]) => setArticles(data));
+    }
+  }, [selectedCategory]);
+
+  if (selectedCategory) {
+    return (
+      <main className="p-6">
+        <button onClick={() => setSelectedCategory(null)} className="underline mb-4">
+          &larr; Kembali ke Kategori
+        </button>
+        <h1 className="text-2xl font-bold mb-4">{selectedCategory.name}</h1>
+        <ul>
+          {articles.map(article => (
+            <li key={article.id} className="mb-2">
+              <a href={article.link} className="text-blue-600 hover:underline">
+                {article.title.rendered}
+              </a>{' '}
+              <span className="text-gray-500 text-sm">{new Date(article.date).toLocaleDateString()}</span>
+            </li>
+          ))}
+        </ul>
+      </main>
+    );
+  }
+
   return (
-    <div className="min-h-screen px-4 py-8 bg-white font-sans">
-      <h1 className="text-2xl font-bold text-center mb-8">Pilih Kategori Artikel</h1>
-      <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
-        {/* Row 1 */}
-        <Link
-          href="/artikel/kategori/mental-health"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Mental Health
-        </Link>
-        <Link
-          href="/artikel/kategori/survive-mode"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Survive Mode
-        </Link>
-        {/* Row 2 */}
-        <Link
-          href="/artikel/kategori/character"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Character
-        </Link>
-        <Link
-          href="/artikel/kategori/relationship"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Relationship
-        </Link>
-        {/* Row 3 */}
-        <Link
-          href="/artikel/kategori/self-reflection"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Self Reflection
-        </Link>
-        <Link
-          href="/artikel/kategori/momomoney"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Momomoney
-        </Link>
-        {/* Row 4: empty cell + Life Phase */}
-        <div />
-        <Link
-          href="/artikel/kategori/life-phase"
-          className="block bg-blue-50 text-blue-700 font-medium px-4 py-3 rounded-lg shadow hover:bg-blue-100 transition text-center"
-        >
-          Life Phase
-        </Link>
-      </div>
-    </div>
+    <main className="p-6">
+      <h1 className="text-3xl font-bold mb-4">Kategori Artikel</h1>
+      <ul className="grid grid-cols-2 gap-4">
+        {categories.map(cat => (
+          <li key={cat.id}>
+            <button
+              onClick={() => setSelectedCategory(cat)}
+              className="block w-full p-4 bg-gray-100 rounded hover:bg-gray-200"
+            >
+              {cat.name} ({cat.count})
+            </button>
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
