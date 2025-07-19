@@ -1,173 +1,156 @@
 'use client';
 
-import React from 'react';
+import { useState } from "react";
+import Image from "next/image";
+import BottomNav from "../components/BottomNav"; // GANTI path kalau file lo beda
 
 const confessList = [
-  'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
-  'Capek, tapi gas terus.',
-  'Hidup naik turun itu biasa!',
-];
-const userAvatars = [
-  '/assets/users/user1.jpg',
-  '/assets/users/user2.jpg',
-  '/assets/users/user3.jpg',
-  '/assets/users/user4.jpg',
+  "Gue lagi down, tapi tetep semangat. #SelfifyConfess",
+  "Capek, tapi gas terus.",
+  "Patah hati? Healing dong!",
+  "Lagi insecure, tapi harus tetap produktif.",
 ];
 const quizCategories = [
-  { name: 'Mental Health', color: 'border-yellow-300' },
-  { name: 'Survive Mode', color: 'border-blue-300' },
-  { name: 'Character', color: 'border-slate-200' },
-  { name: 'Relationship', color: 'border-slate-200' },
-  { name: 'Self Reflection', color: 'border-slate-200' },
-  { name: 'Momomoney', color: 'border-slate-200' },
+  "Mental Health",
+  "Survive Mode",
+  "Character",
+  "Relationship",
+  "Self Reflection",
+  "Momomoney",
+  "Life Phase",
 ];
-const moodQuotes = [
-  'Hidup bukan tentang menunggu badai berlalu, tapi belajar menari di tengah hujan.',
-  'Jangan bandingkan prosesmu dengan orang lain.',
+const avatars = [
+  "/assets/avatar1.png",
+  "/assets/avatar2.png",
+  "/assets/avatar3.png",
+  "/assets/avatar4.png",
 ];
-export default function Home() {
+
+export default function HomePage() {
+  const [confessIdx] = useState(0);
+
   return (
-    <div className="flex justify-center min-h-screen bg-[#f7f4fd]">
-      <div className="w-full max-w-[360px] pb-32 px-3">
-        {/* HEADER */}
-        <div className="flex items-center justify-between pt-4 mb-3">
+    <div className="w-full min-h-screen flex flex-col items-center bg-[#FBF7FF]">
+      <div className="w-full max-w-[360px] mx-auto px-4 pt-3 pb-28 relative">
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-2">
           <div>
-            <span className="text-gray-400 text-sm">Hello, Sandra</span>
-            <div className="text-[22px] font-bold text-gray-800 leading-5">Today 25 Nov.</div>
+            <div className="flex items-center gap-1">
+              <span className="font-bold text-[#888] text-[22px] leading-tight">Hello, Sandra</span>
+            </div>
+            <span className="font-normal text-[#888] text-[20px] leading-none">Today 25 Nov.</span>
           </div>
-          <button className="rounded-full bg-white shadow-md w-11 h-11 flex items-center justify-center">
-            <svg width={22} height={22} fill="none" stroke="#787878" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21 17 17" /></svg>
+          <button className="bg-white rounded-full p-2 shadow-md">
+            <svg width="22" height="22" fill="none" stroke="#9CA3AF" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </button>
         </div>
 
-        {/* CONFESS WALL */}
-        <div className="relative mb-6">
-          <div className="rounded-2xl bg-[#fff8cd] shadow-lg px-5 pt-5 pb-7 min-h-[110px] flex flex-col">
-            <span className="px-4 py-1 rounded-xl bg-white font-medium text-[#eaac09] text-base absolute -top-6 left-5 shadow">
-              Confess Wall
-            </span>
-            {/* Confess slider */}
-            <div className="mt-4">
-              <div className="overflow-x-auto no-scrollbar whitespace-nowrap flex gap-3 snap-x">
-                {confessList.map((c, i) => (
-                  <div
-                    key={i}
-                    className="inline-block w-72 max-w-[260px] rounded-2xl bg-[#fffbe5] text-[#222] text-lg font-bold px-4 py-5 mr-2 snap-center shadow-sm"
-                  >
-                    {c}
-                  </div>
-                ))}
+        {/* Confess Wall Card */}
+        <div className="relative mb-4">
+          {/* Avatars */}
+          <div className="absolute -top-7 left-4 flex flex-row gap-[-10px] z-10">
+            {avatars.map((src, i) => (
+              <div
+                key={i}
+                className={`w-8 h-8 rounded-full border-2 border-white overflow-hidden -ml-2 bg-white ${i === 0 ? 'ml-0' : ''}`}
+                style={{ boxShadow: "0 1px 5px #E1E1E1" }}
+              >
+                <Image src={src} alt={`avatar-${i}`} width={32} height={32} />
               </div>
-            </div>
-            {/* User avatars */}
-            <div className="flex mt-5 space-x-[-10px] pl-1">
-              {userAvatars.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`user${i}`}
-                  className="w-8 h-8 rounded-full border-2 border-white -ml-2 first:ml-0 bg-gray-100 object-cover"
-                  style={{ zIndex: 10 - i }}
-                />
-              ))}
+            ))}
+          </div>
+          <div className="rounded-3xl bg-yellow-100 shadow-lg p-4 pt-6 min-h-[120px] flex flex-col justify-between">
+            {/* Chip Confess Wall */}
+            <span className="absolute -top-5 left-6 bg-white text-[#FFA900] font-semibold rounded-xl px-4 py-1 text-[22px] shadow-sm">Confess Wall</span>
+            {/* Confess Text */}
+            <div className="font-black text-[22px] text-[#18181B] mb-2" style={{ minHeight: 60 }}>
+              {confessList[confessIdx]}
             </div>
           </div>
         </div>
 
-        {/* QUIZ POPULER */}
-        <div className="mb-7">
-          <div className="text-[20px] font-bold text-gray-700 mb-3">Quiz Populer</div>
-          <div className="overflow-x-auto no-scrollbar whitespace-nowrap flex gap-3 snap-x pb-2">
-            {quizCategories.map((q, i) => (
+        {/* Quiz Populer */}
+        <div className="mt-2 mb-3">
+          <span className="font-bold text-[23px] text-gray-700 mb-2 block">Quiz Populer</span>
+          <div className="flex flex-row gap-2 overflow-x-auto no-scrollbar">
+            {quizCategories.slice(0, 4).map((cat, i) => (
               <div
                 key={i}
-                className={`inline-block min-w-[110px] max-w-[110px] h-[65px] rounded-2xl border-2 ${q.color} bg-white flex items-center justify-center text-[16px] font-semibold text-blue-600 shadow-sm snap-center`}
+                className={`min-w-[110px] rounded-2xl border-2 ${
+                  cat === "Mental Health" ? "border-yellow-300" : cat === "Survive Mode" ? "border-blue-300" : "border-gray-200"
+                } bg-white px-2 py-5 flex items-center justify-center font-bold text-blue-600 text-lg mx-1 shadow`}
+                style={{ fontSize: "18px" }}
               >
-                {q.name}
+                {cat}
               </div>
             ))}
           </div>
         </div>
 
-        {/* GRID 3 CARD: MOOD QUOTES, SURVIVE MODE, 2AM LOUNGE */}
-        <div className="grid grid-cols-2 gap-3 mb-7">
+        {/* GRID 2x2 Card */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
           {/* Mood Quotes */}
-          <div className="bg-[#fff3ad] rounded-2xl p-4 flex flex-col shadow-md min-h-[170px] justify-between">
-            <div>
-              <span className="text-[#b28900] font-semibold text-base">Mood Quotes</span>
-              <div className="mt-3 font-bold text-[#222] text-lg">"{moodQuotes[0]}"</div>
-            </div>
-            <div className="flex mt-4 gap-2">
-              <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
-                {/* Share icon */}
+          <div className="bg-yellow-100 rounded-3xl p-5 flex flex-col justify-between shadow-lg min-h-[210px] relative">
+            <span className="font-bold text-yellow-800 text-lg mb-2">Mood Quotes</span>
+            <span className="font-bold text-[20px] text-gray-800 mb-4">
+              "Hidup bukan tentang menunggu badai berlalu, tapi belajar menari di tengah hujan."
+            </span>
+            <div className="flex gap-3">
+              <button className="bg-white w-10 h-10 rounded-full flex items-center justify-center shadow border">
+                {/* Share */}
                 <svg width={22} height={22} fill="none" stroke="#b28900" strokeWidth={2} viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.83 3.98"/></svg>
               </button>
-              <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
-                {/* Download icon */}
+              <button className="bg-white w-10 h-10 rounded-full flex items-center justify-center shadow border">
+                {/* Download */}
                 <svg width={22} height={22} fill="none" stroke="#b28900" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 5v14m0 0l-5-5m5 5l5-5"/></svg>
               </button>
             </div>
           </div>
           {/* Survive Mode */}
-          <div className="bg-[#c8e1ff] rounded-2xl p-4 flex flex-col shadow-md min-h-[170px] justify-between">
-            <div>
-              <span className="text-[#2380e7] font-semibold text-base">Survive Mode</span>
-              <div className="mt-3 font-bold text-[#144481] text-lg">
-                Tes ketahanan mental & bertahan hidup!
-              </div>
-            </div>
-            <button className="mt-4 w-full bg-[#2582ff] text-white rounded-xl py-2 font-semibold shadow">Masuk</button>
+          <div className="bg-blue-100 rounded-3xl p-5 flex flex-col justify-between shadow-lg min-h-[210px] relative">
+            <span className="font-bold text-blue-700 text-lg mb-2">Survive Mode</span>
+            <span className="font-bold text-[20px] text-gray-700 mb-4">
+              Tes ketahanan mental & bertahan hidup!
+            </span>
+            <button className="mt-auto bg-blue-600 text-white rounded-full px-6 py-2 font-semibold shadow">
+              Masuk
+            </button>
           </div>
-        </div>
-        {/* 2AM LOUNGE (full-width, pink) */}
-        <div className="mb-7">
-          <div className="bg-[#ffe1ee] rounded-2xl p-5 flex justify-between items-center shadow-md min-h-[70px]">
-            <span className="text-[#e45594] font-semibold text-[20px]">2AM Lounge</span>
-            <span className="rounded-full border-2 border-[#e45594] p-2">
-              {/* Lock icon */}
-              <svg width={22} height={22} fill="none" stroke="#e45594" strokeWidth={2} viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="8" rx="2"/><path d="M12 16v-2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          {/* 2AM Lounge */}
+          <div className="col-span-2 bg-pink-100 rounded-3xl p-6 flex flex-row items-center justify-between shadow-lg min-h-[100px] mt-2 relative">
+            <span className="font-bold text-pink-700 text-2xl">2AM Lounge</span>
+            <span className="bg-white rounded-full p-2 shadow-md">
+              {/* Lock */}
+              <svg width={28} height={28} fill="none" stroke="#e45594" strokeWidth={2} viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="8" rx="2"/><path d="M12 16v-2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
             </span>
           </div>
         </div>
 
-        {/* ARTIKEL TERBARU PLACEHOLDER */}
-        <div className="mt-7">
-          <div className="font-bold text-xl text-gray-700 mb-2">Artikel Terbaru</div>
+        {/* Preview Artikel */}
+        <div className="mb-5">
+          <span className="font-bold text-[23px] text-gray-700 mb-2 block">Artikel Terbaru</span>
           <div className="grid grid-cols-1 gap-3">
-            <div className="bg-white rounded-2xl p-4 shadow-sm h-24 opacity-40" />
-            <div className="bg-white rounded-2xl p-4 shadow-sm h-24 opacity-40" />
-            <div className="bg-white rounded-2xl p-4 shadow-sm h-24 opacity-40" />
+            <div className="bg-white rounded-xl shadow p-4">
+              <span className="font-semibold text-lg text-gray-800">Kenali Fase Hidupmu!</span>
+              <p className="text-gray-500 text-[15px] mt-1">Baca yuk, cara mengenali fase hidup dan tips bertumbuh sehat!</p>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <span className="font-semibold text-lg text-gray-800">Cara Atasi Quarter Life</span>
+              <p className="text-gray-500 text-[15px] mt-1">Quarter life crisis bukan akhir segalanya. Ini kiat survive-nya.</p>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <span className="font-semibold text-lg text-gray-800">Momen Refleksi Tahunan</span>
+              <p className="text-gray-500 text-[15px] mt-1">Tahun baru, resolusi baru. Yuk refleksi dan evaluasi!</p>
+            </div>
           </div>
         </div>
-        {/* Kosong bawah buat future features */}
-        <div className="h-24" />
+
+        <div className="h-20" /> {/* Spacer bawah */}
       </div>
 
-      {/* BOTTOM NAVBAR */}
-      <div className="fixed bottom-0 left-0 w-full flex justify-center z-50">
-        <div className="w-full max-w-[360px] bg-white rounded-t-3xl shadow-xl flex items-center px-4 py-2 gap-3 justify-between border-t">
-          {/* Home */}
-          <button className="flex flex-col items-center gap-1 text-blue-600 font-bold">
-            <svg width={26} height={26} fill="none" stroke="#2563eb" strokeWidth={2} viewBox="0 0 24 24"><path d="M3 10.5L12 4l9 6.5"/><path d="M4 10v10h5v-5h6v5h5V10"/></svg>
-            <span className="text-xs">Home</span>
-          </button>
-          {/* TTS */}
-          <button className="flex flex-col items-center gap-1 text-gray-400">
-            <svg width={26} height={26} fill="none" stroke="#9ca3af" strokeWidth={2} viewBox="0 0 24 24"><rect x="8" y="7" width="8" height="10" rx="4"/><circle cx="12" cy="8.5" r="4"/><path d="M15.5 14.5C17.5 16 19 16.5 19 20"/><path d="M8.5 14.5C6.5 16 5 16.5 5 20"/></svg>
-            <span className="text-xs">TTS</span>
-          </button>
-          {/* Profile */}
-          <button className="flex flex-col items-center gap-1 text-gray-400">
-            <svg width={26} height={26} fill="none" stroke="#9ca3af" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/></svg>
-            <span className="text-xs">Profil</span>
-          </button>
-          {/* Settings */}
-          <button className="flex flex-col items-center gap-1 text-gray-400">
-            <svg width={26} height={26} fill="none" stroke="#9ca3af" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-1.82-.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15.4 9a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 15z"/></svg>
-            <span className="text-xs">Settings</span>
-          </button>
-        </div>
-      </div>
+      {/* Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }
