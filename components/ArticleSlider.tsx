@@ -1,53 +1,34 @@
-'use client';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/autoplay';
+// components/ArticleSlider.tsx
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Article } from '@/types';
 
 export default function ArticleSlider({ articles }: { articles: Article[] }) {
   return (
-    <section className="py-12 px-4 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-        Artikel Pilihan
-      </h2>
-      <Swiper
-        modules={[Autoplay, Pagination]}
-        spaceBetween={24}
-        slidesPerView={1.2}
-        centeredSlides
-        autoplay={{ delay: 3500, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
-      >
-        {articles.slice(0, 6).map((art) => (
-          <SwiperSlide key={art.slug} className="!w-auto">
-            <Link
-              href={`/artikel/${art.slug}`}
-              className="block bg-white overflow-hidden rounded-xl shadow hover:shadow-lg transition w-80 mx-auto"
-            >
-              {art.featuredImage?.node?.sourceUrl && (
-                <Image
-                  src={art.featuredImage.node.sourceUrl}
-                  alt={art.title}
-                  width={320}
-                  height={180}
-                  className="object-cover w-full h-40"
-                  unoptimized
-                />
-              )}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {art.title}
-                </h3>
-              </div>
-            </Link>
-          </SwiperSlide>
+    <div className="overflow-hidden">
+      <div className="flex space-x-4 animate-scroll">
+        {articles.map((art) => (
+          <Link
+            key={art.slug}
+            href={`/artikel/kategori/${art.slug}`}
+            className="min-w-[250px] bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
+          >
+            {art.featuredImage?.node?.sourceUrl && (
+              <Image
+                src={art.featuredImage.node.sourceUrl}
+                alt={art.title}
+                width={300}
+                height={180}
+                className="w-full h-44 object-cover"
+                unoptimized
+              />
+            )}
+            <div className="p-4">
+              <h3 className="text-lg font-semibold">{art.title}</h3>
+            </div>
+          </Link>
         ))}
-      </Swiper>
-    </section>
+      </div>
+    </div>
   );
 }
