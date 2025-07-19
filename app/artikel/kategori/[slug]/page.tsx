@@ -1,58 +1,37 @@
-// app/artikel/kategori/[slug]/page.tsx
-import Link from 'next/link';
+// app/artikel/[slug]/page.tsx
+import { fetchArticleBySlug, fetchArticles } from '@/lib/wpClient';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
-// Tambahkan dummy data artikel per kategori
-const articlesByCategory: Record<string, Array<{ title: string; slug: string; excerpt: string; thumbnail: string }>> = {
-  'mental-health': [
-    {
-      title: 'Self-Worth Lo Bukan dari Gaji',
-      slug: 'self-worth-bukan-dari-gaji',
-      excerpt: 'Nilai diri lo nggak ditentuin angka di slip gaji. Yuk bahas kenapa self-worth itu harus datang dari dalam.',
-      thumbnail: '/assets/artikel/self-worth.webp',
-    },
-  ],
-  'survive-mode': [
-    {
-      title: 'Lo Capek Jiwa Tapi Masih Ketawa?',
-      slug: 'lo-capek-jiwa-tapi-masih-ketawa',
-      excerpt: 'Kadang kita keliatan oke, tapi dalamnya ambyar. Artikel ini buat lo yang suka pura-pura kuat.',
-      thumbnail: '/assets/artikel/lo-capek-jiwa-tapi-masih-ketawa.webp',
-    },
-  ],
-  // Tambahkan kategori lain sesuai kebutuhan
-};
+interface PageProps { params: { slug: string } }
 
-export const metadata = ({ params }: { params: { slug: string } }) => ({
-  title: `Kategori: ${params.slug.replace(/-/g, ' ')}`,
-  description: `Daftar artikel kategori ${params.slug.replace(/-/g, ' ')}`,
-});
+// Pre-generate pages for all article slugs
+export async function generateStaticParams() {
+  const articles = await fetchArticles();
+  return articles.map((art: any) => ({ slug: art.slug }));
+}
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const articles = articlesByCategory[slug] || [];
+export default async function ArticleDetail({ params }: PageProps) {
+  const article = await fetchArticleBySlug(params.slug);
+  if (!article) return notFound();
 
   return (
-    <div className="min-h-screen px-4 py-8 bg-white font-sans">
-      <h1 className="text-2xl font-bold text-center mb-6 capitalize">{`Kategori: ${slug.replace(/-/g, ' ')}`}</h1>
-      {articles.length > 0 ? (
-        <div className="max-w-5xl mx-auto grid grid-cols-2 gap-6">
-          {articles.map((art) => (
-            <Link key={art.slug} href={`/artikel/${art.slug}`}>
-              <a className="bg-white rounded-xl shadow hover:shadow-md transition p-4 block">
-                <img
-                  src={art.thumbnail}
-                  alt={art.title}
-                  className="rounded-lg object-cover w-full mb-4"
-                />
-                <h2 className="text-lg font-semibold text-blue-700">{art.title}</h2>
-                <p className="text-sm text-gray-700 mt-1">{art.excerpt}</p>
-              </a>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-600 mt-8">Belum ada artikel di kategori ini.</p>
+    <main className="min-h-screen bg-white p-6">
+      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+      {article.featuredImage?.node?.sourceUrl && (
+        <Image
+          src={article.featuredImage.node.sourceUrl}
+          alt={article.title}
+          width={800}
+          height={450}
+          className="rounded-lg mb-6"
+          unoptimized
+        />
       )}
-    </div>
+      <article
+        className="prose max-w-none"
+        dangerouslySetInnerHTML={{ __html: article.content }}
+      />
+    </main>
   );
 }

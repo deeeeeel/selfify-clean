@@ -1,101 +1,125 @@
-'use client';
+// app/page.tsx
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import Image from 'next/image';
+import { fetchArticles, fetchQuizzes } from '@/lib/wpClient';
 
-import Header from '../components/header';
-import QuizPopuler from '../components/QuizPopuler';
-import ConfessSlider from '../components/ConfessSlider';
-import MoodQuotes from '../components/MoodQuotes';
-import LoungeLock from '../components/LoungeLock';
-import BottomNav from '../components/BottomNav';
+// Dynamically import sliders as client components
+const QuizSlider = dynamic(() => import('@/components/QuizSlider'), { ssr: false });
+const ArticleSlider = dynamic(() => import('@/components/ArticleSlider'), { ssr: false });
 
-export default function Home() {
+export default async function HomePage() {
+  const quizzes = await fetchQuizzes().catch(() => []);
+  const articles = await fetchArticles().catch(() => []);
+
   return (
-    <main className="bg-gray-100 min-h-screen pb-24">
-      {/* Header + ConfessSlider */}
-      <div className="bg-white pt-8 pb-2 px-4 flex flex-col gap-2 shadow-md rounded-xl w-[90%] mx-auto mt-8">
-        <Header />
-        <h2 className="text-center text-xl font-bold text-blue-900">Confess Terbaru</h2>
-        <ConfessSlider />
-      </div>
+    <>
+      <main className="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+        {/* Hero Section */}
+        <section className="relative h-[60vh] flex items-center justify-center text-center bg-gradient-to-br from-blue-600 to-purple-600 dark:from-gray-800 dark:to-black">
+          <div className="z-10 px-4">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Amplify Your Self</h1>
+            <p className="text-lg md:text-xl text-blue-100 dark:text-blue-200 mb-6">
+              Jelajahi fitur interaktif: artikel, quiz, dan tools self-growth.
+            </p>
+            <Link
+              href="/artikel"
+              className="inline-block bg-yellow-400 dark:bg-yellow-600 text-blue-800 dark:text-blue-200 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition"
+            >
+              Cek Artikel
+            </Link>
+          </div>
+          <div className="absolute inset-0 opacity-20">
+            <Image src="/assets/icons/quotes/qm1.svg" alt="" fill className="object-cover" />
+          </div>
+        </section>
 
-      {/* Confess Wall */}
-      <section className="w-[90%] mx-auto mt-8 rounded-2xl border-2 border-yellow-400 bg-white p-4">
-        <h2 className="text-center text-xl font-bold text-blue-900 mb-2">Confess Wall</h2>
-        <button className="block w-full bg-blue-900 text-yellow-400 text-lg font-bold py-2 rounded-xl hover:bg-blue-700">
-          Gaas...Join
-        </button>
-      </section>
+        {/* Feature Cards */}
+        <section className="py-12 px-4 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <Link
+            href="/bizboost"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col"
+          >
+            <span className="self-end bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 text-xs rounded">
+              Soon
+            </span>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-4 mb-2">
+              BizBoost
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 flex-grow">
+              Empower UMKM kamu lewat campaign giveaway & toolkit keuangan.
+            </p>
+            <span className="mt-4 text-blue-600 dark:text-blue-400 font-semibold">
+              Selengkapnya →
+            </span>
+          </Link>
 
-      {/* Mood Quotes */}
-      <section className="w-[90%] mx-auto mt-8 bg-[#FFF9C4] p-4 rounded-xl flex flex-col items-center space-y-4">
-        <MoodQuotes />
-      </section>
+          <Link
+            href="/survive-mode"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col"
+          >
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              Survive Mode
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 flex-grow">
+              Simulasi interview & persiapan karier lengkap dengan roadmap fitur.
+            </p>
+            <span className="mt-4 text-blue-600 dark:text-blue-400 font-semibold">
+              Mulai Simulasi →
+            </span>
+          </Link>
+        </section>
 
-      {/* Quiz Populer */}
-      <section className="flex justify-center mt-8">
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-4 border-4 border-blue-900">
-          <h2 className="text-2xl text-center font-bold text-yellow-400 bg-blue-900 py-2 rounded-xl mb-4">
+        {/* Quiz Populer Slider */}
+        <div className="py-12 px-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
             Quiz Populer
           </h2>
-          <QuizPopuler />
-          <button className="block w-full bg-blue-900 text-yellow-400 text-lg font-bold py-2 mt-4 rounded-xl hover:bg-blue-700">
-            Cek Semua Quiz
-          </button>
+          <QuizSlider quizzes={quizzes} />
         </div>
-      </section>
 
-      {/* 2AM Lounge */}
-      <section className="w-[90%] mx-auto mt-8 flex flex-col items-center">
-        <div className="flex gap-4 mb-2 w-full justify-between">
-          <button className="flex-1 bg-yellow-400 text-blue-900 font-bold py-2 rounded-xl border border-blue-900">
-            Deep Talk
-          </button>
-          <button className="flex-1 bg-yellow-400 text-blue-900 font-bold py-2 rounded-xl border border-blue-900">
-            Talk to Selfie
-          </button>
+        {/* Artikel Pilihan Slider */}
+        <div className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
+            Artikel Pilihan
+          </h2>
+          <ArticleSlider articles={articles} />
         </div>
-        <div className="bg-white border-2 border-blue-900 rounded-2xl w-full max-w-sm p-4 flex flex-col items-center shadow relative">
-          <div className="absolute top-2 right-2 text-yellow-400 text-lg">🔒</div>
-          <h2 className="font-bold text-lg text-blue-900 mb-2">2AM Lounge</h2>
-          <div className="bg-blue-900 text-yellow-400 font-bold rounded-xl w-full py-2 text-center">
-            Closed
-          </div>
-        </div>
-        {/* Tombol Artikel Booster dihapus */}
-      </section>
 
-      {/* Artikel List */}
-      <section className="w-[95%] mx-auto mt-8">
-        <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-2xl flex items-center p-4 shadow-md gap-4">
-            <span className="text-3xl">🖼️</span>
-            <div className="flex-1 text-blue-900 font-bold">
-              Lo Capek Jiwa Tapi Masih Ketawa?
-            </div>
-            <a className="flex items-center gap-1 text-yellow-400 font-bold hover:underline" href="#">
-              <span>Baca</span>
-              <span className="text-xl">→</span>
-            </a>
+        {/* Eksplor Fitur Lain */}
+        <section className="py-12 px-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
+            Eksplor Fitur Lain
+          </h2>
+          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
+            {[
+              { title: 'Mood Quotes', href: '/mood-quotes' },
+              { title: 'Confess Wall', href: '/confess' },
+              { title: 'Talk to Selfie', href: '/talk-to-selfie' },
+              { title: '2AM Lounge', href: '/2am-lounge' },
+              { title: 'Daily Check-In', href: '/daily-checkin' },
+              { title: 'Community Challenges', href: '/challenges' },
+            ].map((item, idx) => (
+              <Link
+                key={idx}
+                href={item.href}
+                className="block bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-center"
+              >
+                <span className="text-gray-900 dark:text-gray-100">{item.title}</span>
+              </Link>
+            ))}
           </div>
-          <div className="bg-white rounded-2xl flex items-center p-4 shadow-md gap-4">
-            <span className="text-3xl">🖼️</span>
-            <div className="flex-1 text-blue-900 font-bold">
-              Self Check-in Buat Mulai Hari
-            </div>
-            <a className="flex items-center gap-1 text-yellow-400 font-bold hover:underline" href="#">
-              <span>Baca</span>
-              <span className="text-xl">→</span>
-            </a>
-          </div>
-        </div>
-        <a href="/artikel/kategori" className="block w-full bg-yellow-400 text-blue-900 font-bold mt-6 py-2 rounded-xl text-center hover:bg-yellow-300 transition">
-          Lihat Semua Artikel
-        </a>
-      </section>
+        </section>
+      </main>
 
-      {/* Bottom Nav */}
-      <div className="fixed bottom-0 left-0 w-full">
-        <BottomNav />
-      </div>
-    </main>
+      {/* Floating Action Button for Talk to Selfie */}
+      <Link
+        href="/talk-to-selfie"
+        aria-label="Talk to Selfie"
+        className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-lg transition"
+      >
+        💬
+      </Link>
+    </>
   );
 }

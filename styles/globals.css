@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-white text-gray-900 font-sans antialiased;
+  @apply bg-white text-gray-900 antialiased;
+  font-family: 'Trebuchet MS', sans-serif;
 }
-
-

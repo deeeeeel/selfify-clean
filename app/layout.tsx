@@ -1,9 +1,11 @@
 // app/layout.tsx
 import '../styles/globals.css';
 import BottomNav from '@/components/BottomNav';
+import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+
+// Modal hanya client-side
+const GreetingModal = dynamic(() => import('@/components/GreetingModal'), { ssr: false });
 
 export const metadata = {
   title: 'Selfify — Amplify Your Self',
@@ -13,24 +15,14 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
-      <body className="font-sans bg-white text-gray-900 antialiased">
-        {/* Logo / Header */}
-        <header className="flex justify-center items-center py-4 border-b border-gray-200">
-          <Link href="/">
-            <Image
-              src="/assets/logo-selfify.svg"
-              alt="Logo Selfify"
-              width={160}
-              height={40}
-              priority
-            />
-          </Link>
-        </header>
+      <body className="font-sans bg-white text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100">
+        {/* Pop-up greeting */}
+        <GreetingModal />
 
-        {/* Main Content */}
-        <main className="min-h-[calc(100vh-56px)]">{children}</main>
+        {/* Konten halaman */}
+        {children}
 
-        {/* Bottom Navigation */}
+        {/* Bottom navigation */}
         <BottomNav />
       </body>
     </html>
