@@ -1,125 +1,98 @@
 // app/page.tsx
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { fetchArticles, fetchQuizzes } from '@/lib/wpClient';
+import React from 'react';
+import { Heart, Zap, Shield, HomeIcon, GridIcon, PlusCircle, MessageCircle, User } from 'lucide-react';
 
-// Dynamically import sliders as client components
-const QuizSlider = dynamic(() => import('@/components/QuizSlider'), { ssr: false });
-const ArticleSlider = dynamic(() => import('@/components/ArticleSlider'), { ssr: false });
-
-export default async function HomePage() {
-  const quizzes = await fetchQuizzes().catch(() => []);
-  const articles = await fetchArticles().catch(() => []);
-
+export default function HomePage() {
   return (
-    <>
-      <main className="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
-        {/* Hero Section */}
-        <section className="relative h-[60vh] flex items-center justify-center text-center bg-gradient-to-br from-blue-600 to-purple-600 dark:from-gray-800 dark:to-black">
-          <div className="z-10 px-4">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Amplify Your Self</h1>
-            <p className="text-lg md:text-xl text-blue-100 dark:text-blue-200 mb-6">
-              Jelajahi fitur interaktif: artikel, quiz, dan tools self-growth.
-            </p>
-            <Link
-              href="/artikel"
-              className="inline-block bg-yellow-400 dark:bg-yellow-600 text-blue-800 dark:text-blue-200 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition"
-            >
-              Cek Artikel
-            </Link>
+    <div className="min-h-screen flex flex-col font-trebuchet">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-yellow-400 to-blue-500 text-white p-6 pt-12 text-center">
+        <Image
+          src="/assets/logo.png"
+          alt="Selfify Logo"
+          width={100}
+          height={100}
+          className="mx-auto mb-4"
+        />
+        <h1 className="text-4xl font-bold mb-2">Selfify — Amplify Your Self</h1>
+        <p className="text-lg mb-6">Selfify-in Diri Lo. Kenal, dengar, dan perkuat versi lo yang sebenarnya.</p>
+        <button className="bg-white text-blue-500 font-semibold px-6 py-2 rounded-full hover:bg-gray-100 transition">
+          Mulai Selfify
+        </button>
+      </section>
+
+      {/* Feature Grid */}
+      <section className="p-6 bg-white">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+          <div className="p-4 shadow rounded-lg hover:shadow-lg transition">
+            <Heart className="mx-auto mb-2 text-yellow-500" size={32} />
+            <h3 className="font-bold mb-1">Confess Wall</h3>
+            <p className="text-gray-600 text-sm">Curhat anonim dan dapat insight.</p>
           </div>
-          <div className="absolute inset-0 opacity-20">
-            <Image src="/assets/icons/quotes/qm1.svg" alt="" fill className="object-cover" />
+          <div className="p-4 shadow rounded-lg hover:shadow-lg transition">
+            <Zap className="mx-auto mb-2 text-blue-500" size={32} />
+            <h3 className="font-bold mb-1">Mood Quotes</h3>
+            <p className="text-gray-600 text-sm">Kutipan inspirasional buat mood boost.</p>
           </div>
-        </section>
-
-        {/* Feature Cards */}
-        <section className="py-12 px-4 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Link
-            href="/bizboost"
-            className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col"
-          >
-            <span className="self-end bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 text-xs rounded">
-              Soon
-            </span>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-4 mb-2">
-              BizBoost
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 flex-grow">
-              Empower UMKM kamu lewat campaign giveaway & toolkit keuangan.
-            </p>
-            <span className="mt-4 text-blue-600 dark:text-blue-400 font-semibold">
-              Selengkapnya →
-            </span>
-          </Link>
-
-          <Link
-            href="/survive-mode"
-            className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col"
-          >
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-              Survive Mode
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 flex-grow">
-              Simulasi interview & persiapan karier lengkap dengan roadmap fitur.
-            </p>
-            <span className="mt-4 text-blue-600 dark:text-blue-400 font-semibold">
-              Mulai Simulasi →
-            </span>
-          </Link>
-        </section>
-
-        {/* Quiz Populer Slider */}
-        <div className="py-12 px-4">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
-            Quiz Populer
-          </h2>
-          <QuizSlider quizzes={quizzes} />
+          <div className="p-4 shadow rounded-lg hover:shadow-lg transition">
+            <Shield className="mx-auto mb-2 text-green-500" size={32} />
+            <h3 className="font-bold mb-1">Survive Mode</h3>
+            <p className="text-gray-600 text-sm">Quiz karir & dunia kerja.</p>
+          </div>
         </div>
+      </section>
 
-        {/* Artikel Pilihan Slider */}
-        <div className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
-            Artikel Pilihan
-          </h2>
-          <ArticleSlider articles={articles} />
+      {/* Carousel Confessions */}
+      <section className="p-6 bg-gray-50">
+        <h2 className="text-xl font-semibold mb-4">Confession Carousel</h2>
+        <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="min-w-[200px] bg-white p-4 rounded-lg shadow-md">
+              <p className="text-sm text-gray-700">“Anonymous confession number {i} goes here.”</p>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Eksplor Fitur Lain */}
-        <section className="py-12 px-4">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
-            Eksplor Fitur Lain
-          </h2>
-          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
-            {[
-              { title: 'Mood Quotes', href: '/mood-quotes' },
-              { title: 'Confess Wall', href: '/confess' },
-              { title: 'Talk to Selfie', href: '/talk-to-selfie' },
-              { title: '2AM Lounge', href: '/2am-lounge' },
-              { title: 'Daily Check-In', href: '/daily-checkin' },
-              { title: 'Community Challenges', href: '/challenges' },
-            ].map((item, idx) => (
-              <Link
-                key={idx}
-                href={item.href}
-                className="block bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition text-center"
-              >
-                <span className="text-gray-900 dark:text-gray-100">{item.title}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </main>
+      {/* Quiz Preview */}
+      <section className="p-6 bg-white">
+        <h2 className="text-xl font-semibold mb-4">Pilih Quiz</h2>
+        <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
+          {['Mental Health','Survive Mode','Character','Relationship','Self Reflection','Momomoney','Life Phase'].map((q) => (
+            <div key={q} className="flex-shrink-0 w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center font-semibold text-sm">
+              {q}
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Floating Action Button for Talk to Selfie */}
-      <Link
-        href="/talk-to-selfie"
-        aria-label="Talk to Selfie"
-        className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-lg transition"
-      >
-        💬
-      </Link>
-    </>
+      {/* Article Preview */}
+      <section className="p-6 bg-gray-50">
+        <h2 className="text-xl font-semibold mb-4">Artikel Terbaru</h2>
+        <div className="columns-2 md:columns-3 gap-4 space-y-4">
+          {[1,2,3,4,5,6].map((n) => (
+            <div key={n} className="break-inside-avoid bg-white rounded-lg shadow-md overflow-hidden">
+              <Image src={`/assets/articles/article${n}.jpg`} alt="" width={300} height={200} className="w-full h-40 object-cover" />
+              <div className="p-3">
+                <h3 className="font-bold text-sm mb-1">Judul Artikel {n}</h3>
+                <p className="text-gray-600 text-xs">Preview singkat artikel nomor {n}...</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white p-2 shadow-inner flex justify-around">
+        <HomeIcon size={24} />
+        <GridIcon size={24} />
+        <PlusCircle size={32} className="-mt-4 bg-yellow-400 rounded-full p-1" />
+        <MessageCircle size={24} />
+        <User size={24} />
+      </nav>
+    </div>
   );
 }
