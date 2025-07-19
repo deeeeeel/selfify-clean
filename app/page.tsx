@@ -1,78 +1,99 @@
 'use client';
 
-import BottomNav from '@/components/BottomNav';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
-function getTanggalIndonesia() {
-  const d = new Date();
-  const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const bulan = [
-    'Januari','Februari','Maret','April','Mei','Juni',
-    'Juli','Agustus','September','Oktober','November','Desember'
-  ];
-  return `${hari[d.getDay()]}, ${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
-}
+// Dummy avatar user aktif
+const activeAvatars = [
+  '/assets/user1.png',
+  '/assets/user2.png',
+  '/assets/user3.png',
+  '/assets/user4.png'
+];
+
+// Dummy confess list
+const confessList = [
+  'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
+  'Hari ini capek banget, tapi harus kuat!',
+  'Kadang butuh ruang buat dengerin diri sendiri.',
+  'Ternyata curhat random bisa bikin lega!'
+];
 
 export default function HomePage() {
+  // confess slider state
+  const [confessIdx, setConfessIdx] = useState(0);
+
+  useEffect(() => {
+    // auto slider 3 detik
+    const timer = setInterval(() => {
+      setConfessIdx(idx => (idx + 1) % confessList.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <main className="flex justify-center bg-[#fcfaff] min-h-screen pb-28">
-      <div className="w-full max-w-[360px] p-4">
-        {/* HEADER: Tanggal */}
-        <div className="mb-3 flex justify-between items-center">
-          <span className="text-gray-700 font-medium text-sm">
-            {getTanggalIndonesia()}
+    <div className="flex flex-col items-center bg-[#FCFAFF] min-h-screen py-4" style={{maxWidth: 360, margin: '0 auto'}}>
+      {/* Header tanggal */}
+      <div className="w-full px-4 pb-1 pt-1">
+        <div className="text-gray-500 font-semibold text-[17px] mb-2 tracking-wide">
+          {/* Bisa ganti hari otomatis */}
+          Minggu, 20 Juli 2025
+        </div>
+      </div>
+
+      {/* Confess Wall Card */}
+      <div className="w-[95%] relative rounded-3xl bg-yellow-100 shadow-md px-6 pt-7 pb-7 mb-4 flex flex-col justify-between">
+        {/* Avatar User Aktif */}
+        <div className="absolute left-7 top-[85px] flex gap-[-8px] z-10">
+          {activeAvatars.map((src, idx) => (
+            <div key={idx} className="inline-block -ml-3 first:ml-0">
+              <Image
+                src={src}
+                width={30}
+                height={30}
+                alt={`avatar-${idx}`}
+                className="rounded-full border-2 border-white shadow"
+                style={{background: "#e5e5e5"}}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Confess Slider */}
+        <div className="w-full min-h-[60px] flex items-center justify-center px-2">
+          <span className="text-[1.3rem] font-bold text-gray-800 leading-snug text-center select-none">
+            &quot;{confessList[confessIdx]}&quot;
           </span>
         </div>
 
-        {/* Confess Wall */}
-        <div className="flex flex-col gap-2 mb-6">
-          <div className="relative flex items-center mb-2">
-            <span className="bg-white px-4 py-1 rounded-2xl shadow text-[0.9rem] font-semibold text-yellow-500 absolute -top-5 left-2 z-10 border border-[#fff9]">
-              Confess Wall
-            </span>
-          </div>
-          <div className="bg-yellow-100 rounded-3xl px-5 py-6 shadow-md flex flex-col justify-between min-h-[112px] relative">
-            <p className="font-bold text-base leading-snug mb-5">
-              Gue lagi down, tapi tetep semangat. #SelfifyConfess
-            </p>
-            <div className="flex gap-2 absolute left-5 bottom-4">
-              {[...Array(4)].map((_, i) => (
-                <span key={i} className="inline-block w-8 h-8 bg-[#e0e7ef] rounded-full border-2 border-white -ml-2 first:ml-0 shadow">
-                  <span className="flex items-center justify-center w-full h-full text-lg text-gray-400">🧑‍🦱</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* Tombol “Confess Wall” di pojok kanan bawah */}
+        <button
+          className="absolute right-6 bottom-6 bg-white px-4 py-2 rounded-2xl shadow border border-yellow-200 text-yellow-500 font-bold text-lg hover:bg-yellow-100 active:scale-95 transition"
+          onClick={() => alert('Fitur input confess coming soon')}
+        >
+          Confess Wall
+        </button>
+      </div>
 
-        {/* Quiz Populer */}
-        <div className="mb-6">
-          <h2 className="font-bold text-base mb-2 text-[#21242b]">Quiz Populer</h2>
-          <div className="flex gap-3 overflow-x-auto pb-1">
-            {["Mental Health", "Survive Mode", "Character", "Relationship"].map((c, i) => (
-              <button
-                key={c}
-                className={`
-                  min-w-[110px] 
-                  px-3 py-3 rounded-2xl 
-                  border 
-                  font-semibold 
-                  text-sm 
-                  ${i === 0
-                    ? 'border-yellow-400 text-blue-700'
-                    : i === 1
-                      ? 'border-blue-400 text-blue-700'
-                      : 'border-[#ededed] text-blue-700'
-                  }
-                  bg-white shadow-sm 
-                  flex-shrink-0
-                  flex items-center justify-center
-                  `}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+      {/* Quiz Populer */}
+      <div className="w-full px-4 mt-0 mb-3">
+        <div className="font-bold text-2xl text-gray-800 mb-3">Quiz Populer</div>
+        <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+          {[
+            {name: "Mental Health", border: "border-yellow-400"},
+            {name: "Survive Mode", border: "border-blue-400"},
+            {name: "Character", border: "border-gray-200"},
+            {name: "Relationship", border: "border-gray-200"},
+            {name: "Self Reflection", border: "border-gray-200"}
+          ].map((item, idx) => (
+            <div key={item.name}
+              className={`flex-none min-w-[125px] rounded-2xl py-4 px-2 text-center font-bold text-[1.13rem] text-blue-700 bg-white border-2 ${item.border} shadow-sm`}
+            >
+              {item.name}
+            </div>
+          ))}
         </div>
+      </div>
 
         {/* GRID */}
         <div className="grid grid-cols-2 gap-4 mb-7 items-stretch">
