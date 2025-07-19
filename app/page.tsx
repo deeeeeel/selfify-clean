@@ -1,156 +1,178 @@
 'use client';
+import { useState } from 'react';
+import { Download, Share2, Lock, UserCircle, Search, Bot, User, Settings, Home } from 'lucide-react';
 
-import { useState } from "react";
-import Image from "next/image";
-import BottomNav from "../components/BottomNav";
-
+// Dummy Data
 const confessList = [
-  "Gue lagi down, tapi tetep semangat. #SelfifyConfess",
-  "Capek, tapi gas terus.",
-  "Patah hati? Healing dong!",
-  "Lagi insecure, tapi harus tetap produktif.",
+  'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
+  'Tetep berproses walau capek...',
+  'Hari ini pasti bisa, semangat!',
+  'Capek, tapi gas terus!',
 ];
+const users = [
+  '/assets/avatars/user1.png',
+  '/assets/avatars/user2.png',
+  '/assets/avatars/user3.png',
+  '/assets/avatars/user4.png',
+];
+
 const quizCategories = [
-  "Mental Health",
-  "Survive Mode",
-  "Character",
-  "Relationship",
-  "Self Reflection",
-  "Momomoney",
-  "Life Phase",
+  { name: 'Mental Health', color: 'border-yellow-400', text: 'text-blue-600' },
+  { name: 'Survive Mode', color: 'border-blue-400', text: 'text-blue-600' },
+  { name: 'Character', color: 'border-gray-200', text: 'text-blue-600' },
+  { name: 'Relationship', color: 'border-gray-200', text: 'text-blue-600' },
+  { name: 'Self Reflection', color: 'border-gray-200', text: 'text-blue-600' },
+  { name: 'Momomoney', color: 'border-gray-200', text: 'text-blue-600' },
 ];
-const avatars = [
-  "/assets/avatar1.png",
-  "/assets/avatar2.png",
-  "/assets/avatar3.png",
-  "/assets/avatar4.png",
-];
+
+const quote = 'Hidup bukan tentang menunggu badai berlalu, tapi belajar menari di tengah hujan.';
+const surviveDesc = 'Tes ketahanan mental & bertahan hidup!';
+const loungeDesc = 'Eksklusif untuk member premium.';
 
 export default function HomePage() {
-  const [confessIdx] = useState(0);
+  const [confessIdx, setConfessIdx] = useState(0);
+  const [quizIdx, setQuizIdx] = useState(0);
+
+  // Geser confess (auto/manual next)
+  const nextConfess = () => setConfessIdx((prev) => (prev + 1) % confessList.length);
+
+  // Slider Quiz (auto/manual)
+  const visibleQuiz = quizCategories.slice(quizIdx, quizIdx + 4);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center bg-[#FBF7FF]">
-      <div className="w-full max-w-[360px] mx-auto px-4 pt-3 pb-28 relative">
+    <main className="min-h-screen w-full flex flex-col items-center bg-[#F7F6FD] font-[Trebuchet MS,sans-serif] pb-28">
+      {/* Wrapper */}
+      <div className="w-full max-w-[360px] mx-auto px-3 py-4">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <div className="flex items-center gap-1">
-              <span className="font-bold text-[#888] text-[22px] leading-tight">Hello, Sandra</span>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-3">
+            <img
+              src="/assets/avatars/user1.png"
+              alt="User"
+              className="w-8 h-8 rounded-full border-2 border-yellow-400 object-cover"
+            />
+            <div>
+              <div className="text-xs text-gray-400 font-semibold">Hello, Sandra</div>
+              <div className="text-lg font-bold text-gray-900 tracking-wide">Today 25 Nov.</div>
             </div>
-            <span className="font-normal text-[#888] text-[20px] leading-none">Today 25 Nov.</span>
           </div>
-          <button className="bg-white rounded-full p-2 shadow-md">
-            <svg width="22" height="22" fill="none" stroke="#9CA3AF" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <button className="rounded-full bg-white shadow p-2">
+            <Search className="w-5 h-5 stroke-[#888]" />
           </button>
         </div>
 
         {/* Confess Wall Card */}
-        <div className="relative mb-7">
-          <div className="rounded-3xl bg-yellow-100 shadow-lg px-5 pt-6 pb-5 min-h-[120px] flex flex-col justify-between">
-            {/* Chip Confess Wall */}
-            <span className="absolute -top-5 left-6 bg-white text-[#FFA900] font-semibold rounded-xl px-4 py-1 text-[19px] shadow-sm">Confess Wall</span>
-            {/* Confess Text */}
-            <div className="font-black text-[19px] text-[#18181B] mb-4 min-h-[54px] flex items-center">
+        <div className="relative bg-[#FFF9C7] rounded-3xl p-5 pb-4 mb-4 shadow-lg flex flex-col min-h-[150px]">
+          <span className="absolute top-[-18px] left-6 px-4 py-1 bg-white rounded-2xl text-yellow-500 font-semibold text-lg shadow-md">Confess Wall</span>
+          <div className="flex flex-col gap-1 justify-between h-full">
+            {/* Slider */}
+            <div className="text-[19px] font-bold text-gray-900 leading-snug mb-2 pr-4">
               {confessList[confessIdx]}
             </div>
-            {/* Avatars (bawah dalam card) */}
-            <div className="flex items-center gap-[-10px] mt-2">
-              {avatars.map((src, i) => (
-                <div
+            <div className="flex gap-2 mt-1 mb-0">
+              {users.map((u, i) => (
+                <img
+                  src={u}
                   key={i}
-                  className={`w-7 h-7 rounded-full border-4 border-white overflow-hidden -ml-3 bg-white shadow ${i === 0 ? 'ml-0' : ''}`}
-                  style={{ zIndex: 10 - i }}
-                >
-                  <Image src={src} alt={`avatar-${i}`} width={28} height={28} />
-                </div>
+                  alt={`user${i}`}
+                  className="w-7 h-7 rounded-full border-2 border-white shadow"
+                  style={{ zIndex: users.length - i, marginLeft: i ? -14 : 0 }}
+                />
               ))}
             </div>
           </div>
+          {/* Auto slider: next confess tiap 4 detik */}
+          <style>{`
+            @keyframes confessAutoSlide { 0%{opacity:1} 99%{opacity:1} 100%{opacity:0} }
+          `}</style>
         </div>
 
-        {/* Quiz Populer */}
-        <div className="mb-7">
-          <span className="font-bold text-[20px] text-gray-700 mb-2 block">Quiz Populer</span>
-          <div className="flex flex-row gap-2 overflow-x-auto no-scrollbar">
-            {quizCategories.slice(0, 4).map((cat, i) => (
+        {/* Quiz Populer Slider */}
+        <div className="mb-6">
+          <div className="text-[22px] font-bold text-gray-800 mb-2">Quiz Populer</div>
+          <div className="flex gap-3 overflow-x-auto no-scrollbar">
+            {quizCategories.slice(quizIdx, quizIdx + 4).map((cat, idx) => (
               <div
-                key={i}
-                className={`min-w-[105px] rounded-2xl border-2 ${
-                  cat === "Mental Health" ? "border-yellow-300" : cat === "Survive Mode" ? "border-blue-300" : "border-gray-200"
-                } bg-white px-2 py-4 flex items-center justify-center font-bold text-blue-600 text-[15px] mx-1 shadow`}
+                key={cat.name}
+                className={`min-w-[88px] text-center bg-white px-3 py-3 rounded-2xl border-2 ${cat.color} shadow-sm font-bold text-[15px] flex items-center justify-center ${cat.text}`}
+                style={{ fontSize: "14px", minHeight: 50 }}
               >
-                {cat}
+                {cat.name}
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* GRID 2x2 Card */}
-        <div className="grid grid-cols-2 gap-4 mb-7">
-          {/* Mood Quotes */}
-          <div className="bg-yellow-100 rounded-3xl p-4 flex flex-col justify-between shadow-lg min-h-[160px] relative">
-            <span className="font-bold text-yellow-800 text-[14px] mb-2">Mood Quotes</span>
-            <span className="font-bold text-[16px] text-gray-800 mb-3 leading-snug">
-              "Hidup bukan tentang menunggu badai berlalu, tapi belajar menari di tengah hujan."
-            </span>
-            <div className="flex gap-2">
-              <button className="bg-white w-9 h-9 rounded-full flex items-center justify-center shadow border">
-                {/* Share */}
-                <svg width={18} height={18} fill="none" stroke="#b28900" strokeWidth={2} viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.83 3.98"/></svg>
+            {quizIdx + 4 < quizCategories.length &&
+              <button className="ml-1 px-2 rounded-full" onClick={() => setQuizIdx(q => q + 1)}>
+                <span className="text-lg text-blue-400 font-bold">&gt;</span>
               </button>
-              <button className="bg-white w-9 h-9 rounded-full flex items-center justify-center shadow border">
-                {/* Download */}
-                <svg width={18} height={18} fill="none" stroke="#b28900" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 5v14m0 0l-5-5m5 5l5-5"/></svg>
+            }
+            {quizIdx > 0 &&
+              <button className="mr-1 px-2 rounded-full" onClick={() => setQuizIdx(q => q - 1)}>
+                <span className="text-lg text-blue-400 font-bold">&lt;</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        {/* GRID 2 cols, persis mockup */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-3 mb-6">
+          {/* Mood Quotes (kuning, lebar, 2 baris) */}
+          <div className="col-span-1 row-span-2 bg-[#FFFBDB] rounded-3xl p-5 shadow-lg flex flex-col justify-between min-h-[230px]">
+            <span className="text-[#C58B02] text-xs font-semibold mb-2 tracking-wide">Mood Quotes</span>
+            <div className="flex-1 text-[18px] font-bold leading-snug text-gray-900 mb-4">
+              "{quote}"
+            </div>
+            <div className="flex gap-3 mt-2">
+              <button className="rounded-full p-2 border border-[#C58B02] bg-white hover:bg-[#FFF9E2] transition">
+                <Share2 size={18} className="stroke-[#C58B02]" />
+              </button>
+              <button className="rounded-full p-2 border border-[#C58B02] bg-white hover:bg-[#FFF9E2] transition">
+                <Download size={18} className="stroke-[#C58B02]" />
               </button>
             </div>
           </div>
-          {/* Survive Mode */}
-          <div className="bg-blue-100 rounded-3xl p-4 flex flex-col justify-between shadow-lg min-h-[160px] relative">
-            <span className="font-bold text-blue-700 text-[14px] mb-2">Survive Mode</span>
-            <span className="font-bold text-[16px] text-gray-700 mb-3 leading-snug">
-              Tes ketahanan mental & bertahan hidup!
-            </span>
-            <button className="mt-auto bg-blue-600 text-white rounded-full px-5 py-2 text-xs font-semibold shadow">
-              Masuk
-            </button>
+          {/* Survive Mode (biru) */}
+          <div className="col-span-1 bg-[#E7F1FF] rounded-3xl p-5 shadow-lg flex flex-col justify-between min-h-[110px]">
+            <span className="text-[#3977F6] text-xs font-semibold mb-2 tracking-wide">Survive Mode</span>
+            <div className="flex-1 text-[17px] font-bold leading-snug text-gray-900 mb-4">{surviveDesc}</div>
+            <button className="bg-[#3977F6] text-white rounded-xl py-2 font-bold text-[15px] w-full shadow-sm">Masuk</button>
           </div>
-          {/* 2AM Lounge */}
-          <div className="col-span-2 bg-pink-100 rounded-3xl p-5 flex flex-row items-center justify-between shadow-lg min-h-[80px] mt-2 relative">
-            <span className="font-bold text-pink-700 text-xl">2AM Lounge</span>
-            <span className="bg-white rounded-full p-1 shadow-md">
-              {/* Lock */}
-              <svg width={24} height={24} fill="none" stroke="#e45594" strokeWidth={2} viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="8" rx="2"/><path d="M12 16v-2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
-            </span>
+          {/* 2AM Lounge (pink, ada lock) */}
+          <div className="col-span-1 bg-[#FFD7E2] rounded-3xl p-5 shadow-lg flex flex-col justify-between min-h-[110px] relative">
+            <div className="flex items-center justify-between">
+              <span className="text-[#E55C87] text-xs font-semibold tracking-wide">2AM Lounge</span>
+              <Lock size={20} className="stroke-[#E55C87]" />
+            </div>
+            <div className="flex-1 text-[16px] font-bold leading-snug text-gray-900 mt-2 opacity-60">{loungeDesc}</div>
           </div>
         </div>
 
-        {/* Preview Artikel */}
-        <div className="mb-7">
-          <span className="font-bold text-[20px] text-gray-700 mb-2 block">Artikel Terbaru</span>
-          <div className="grid grid-cols-1 gap-3">
-            <div className="bg-white rounded-xl shadow p-4">
-              <span className="font-semibold text-[16px] text-gray-800">Kenali Fase Hidupmu!</span>
-              <p className="text-gray-500 text-[13px] mt-1">Baca yuk, cara mengenali fase hidup dan tips bertumbuh sehat!</p>
-            </div>
-            <div className="bg-white rounded-xl shadow p-4">
-              <span className="font-semibold text-[16px] text-gray-800">Cara Atasi Quarter Life</span>
-              <p className="text-gray-500 text-[13px] mt-1">Quarter life crisis bukan akhir segalanya. Ini kiat survive-nya.</p>
-            </div>
-            <div className="bg-white rounded-xl shadow p-4">
-              <span className="font-semibold text-[16px] text-gray-800">Momen Refleksi Tahunan</span>
-              <p className="text-gray-500 text-[13px] mt-1">Tahun baru, resolusi baru. Yuk refleksi dan evaluasi!</p>
-            </div>
-          </div>
-        </div>
+        {/* Placeholder section artikel */}
+        <div className="h-28" />
 
-        {/* Spacer */}
-        <div className="h-20" />
       </div>
 
-      {/* Bottom Navigation */}
-      <BottomNav />
-    </div>
+      {/* BOTTOM NAVIGATION */}
+      <nav className="fixed bottom-3 left-0 w-full flex justify-center z-50">
+        <div className="flex w-full max-w-[360px] mx-auto bg-white rounded-[2rem] shadow-xl p-3 items-center justify-between">
+          <a href="#" className="flex flex-col items-center flex-1">
+            <Home className="w-7 h-7 mb-1 stroke-blue-500" />
+            <span className="text-xs font-bold text-blue-500">Home</span>
+          </a>
+          <a href="#" className="flex flex-col items-center flex-1">
+            <Bot className="w-7 h-7 mb-1 stroke-gray-400" />
+            <span className="text-xs font-bold text-gray-400">TTS</span>
+          </a>
+          <a href="#" className="flex flex-col items-center flex-1">
+            <User className="w-7 h-7 mb-1 stroke-gray-400" />
+            <span className="text-xs font-bold text-gray-400">Profil</span>
+          </a>
+          <a href="#" className="flex flex-col items-center flex-1">
+            <Settings className="w-7 h-7 mb-1 stroke-gray-400" />
+            <span className="text-xs font-bold text-gray-400">Settings</span>
+          </a>
+        </div>
+      </nav>
+    </main>
   );
 }
