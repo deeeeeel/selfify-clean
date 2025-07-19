@@ -1,96 +1,140 @@
 // app/page.tsx
+'use client';
+
 import Head from 'next/head'
 import Image from 'next/image'
-import React from 'react'
-import { Heart, Zap, Shield, Home as HomeIcon, Grid as GridIcon, PlusCircle, FileText, User } from 'lucide-react'
+import React, { useState } from 'react'
+import {
+  Home as HomeIcon,
+  Robot as TTSIcon,
+  Bookmark,
+  User,
+  Lock,
+  Share2,
+  Download,
+} from 'lucide-react'
 
 export default function HomePage() {
+  // placeholder data
+  const confessSlides = ['Confession 1', 'Confession 2', 'Confession 3', 'Confession 4']
+  const quizCategories = ['Personality', 'Career', 'Wellness', 'Relationships', 'Adventure']
+  const moodQuotes = ['/quotes/q1.png', '/quotes/q2.png', '/quotes/q3.png']
+  const articles = [
+    { title: 'Self-Worth Bukan Dari Gaji', img: '/assets/art1.jpg' },
+    { title: 'Tips Tetap Termotivasi', img: '/assets/art2.jpg' },
+    { title: 'Mengenal Diri Lewat Quiz', img: '/assets/art3.jpg' },
+    { title: 'Pentingnya Istirahat', img: '/assets/art4.jpg' },
+    { title: 'Cara Konsisten Olahraga', img: '/assets/art5.jpg' },
+    { title: 'Mindfulness 101', img: '/assets/art6.jpg' },
+  ]
+
   return (
-    <>
+    <div className="mx-auto w-full max-w-[360px] bg-white min-h-screen relative">
       <Head>
         <title>Selfify • Amplify Your Self</title>
         <meta name="description" content="Platform tempatmu confess, mood quotes, dan quiz self-discovery." />
-        <meta property="og:title" content="Selfify • Amplify Your Self" />
-        <meta property="og:description" content="Platform tempatmu confess, mood quotes, dan quiz self-discovery." />
-        <meta property="og:image" content="/og-image.png" />
       </Head>
-      <div className="min-h-screen flex flex-col font-trebuchet bg-white">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-yellow-400 to-blue-500 text-white p-8 text-center">
-          <h1 className="text-4xl font-bold mb-2">Selfify</h1>
-          <p className="text-lg mb-4">Amplify Your Self</p>
-          <button className="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100">
-            Mulai Eksplorasi
+
+      {/* Header: Confess Wall */}
+      <header className="flex items-center justify-between p-4">
+        <p className="text-sm font-semibold text-blue-500">Confess Wall</p>
+        <div className="flex -space-x-2">
+          <Image src="/avatars/1.jpg" alt="User 1" width={32} height={32} className="rounded-full border-2 border-white" />
+          <Image src="/avatars/2.jpg" alt="User 2" width={32} height={32} className="rounded-full border-2 border-white" />
+          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs">+4</div>
+        </div>
+      </header>
+
+      {/* Confess Slides */}
+      <section className="px-4 overflow-x-auto snap-x snap-mandatory flex space-x-4 pb-4">
+        {confessSlides.map((text, i) => (
+          <div
+            key={i}
+            className="snap-start w-[280px] h-36 bg-gray-100 rounded-lg flex items-center justify-center p-4 text-sm"
+          >
+            {text}
+          </div>
+        ))}
+      </section>
+
+      {/* Quiz Populer Slider */}
+      <section className="px-4 mt-2">
+        <h2 className="text-lg font-semibold mb-2 text-gray-800">Quiz Populer</h2>
+        <div className="overflow-x-auto snap-x snap-mandatory flex space-x-3 pb-4">
+          {quizCategories.map((cat, idx) => (
+            <div
+              key={idx}
+              className="snap-start bg-yellow-200 text-yellow-800 font-medium rounded-lg px-4 py-2 whitespace-nowrap"
+            >
+              {cat}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Mood Quotes & Survive Mode & 2AM Lounge */}
+      <section className="px-4 mt-2 grid grid-cols-1 gap-4">
+        {/* Mood Quotes */}
+        <div className="relative">
+          <h3 className="text-sm font-semibold text-gray-800 mb-1">Mood Quotes</h3>
+          <div className="overflow-x-auto snap-x snap-mandatory flex space-x-4 pb-2">
+            {moodQuotes.map((src, i) => (
+              <div key={i} className="snap-start relative w-[200px] h-28 rounded-lg overflow-hidden">
+                <Image src={src} alt="Mood Quote" fill className="object-cover" />
+                <div className="absolute top-2 right-2 flex space-x-2">
+                  <Share2 size={16} className="text-white" />
+                  <Download size={16} className="text-white" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Survive Mode */}
+        <div className="bg-blue-100 rounded-lg p-4 flex flex-col justify-between">
+          <div>
+            <h3 className="font-semibold text-blue-800 mb-1">Survive Mode</h3>
+            <p className="text-sm text-blue-700">Tes ketahanan mentalmu lewat tantangan seru.</p>
+          </div>
+          <button className="mt-2 bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded">
+            Masuk Survive Mode
           </button>
-        </section>
-        {/* Feature Grid */}
-        <section className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="flex flex-col items-center">
-            <Heart size={48} className="text-red-500 mb-2" />
-            <h3 className="font-semibold mb-1">Confess Wall</h3>
-            <p className="text-sm text-gray-600 text-center">Curhat anonim, temukan dukungan.</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Zap size={48} className="text-yellow-400 mb-2" />
-            <h3 className="font-semibold mb-1">Mood Quotes</h3>
-            <p className="text-sm text-gray-600 text-center">Dosis harian motivasi pikiran.</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Shield size={48} className="text-blue-500 mb-2" />
-            <h3 className="font-semibold mb-1">Survive Mode</h3>
-            <p className="text-sm text-gray-600 text-center">Quiz seru untuk self-discovery.</p>
-          </div>
-        </section>
-        {/* Confess Wall Carousel */}
-        <section className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Confess Wall</h2>
-          <div className="flex overflow-x-auto space-x-4">
-            {[1,2,3].map(i => (
-              <div key={i} className="min-w-[200px] p-4 bg-gray-100 rounded">
-                <p className="text-gray-800">"Confession text #{i}"</p>
-              </div>
-            ))}
-          </div>
-        </section>
-        {/* Quiz Preview */}
-        <section className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Quiz Populer</h2>
-          <div className="flex overflow-x-auto space-x-4">
-            {[1,2,3].map(i => (
-              <div key={i} className="min-w-[150px] p-4 bg-yellow-100 rounded-full text-center">
-                <p className="font-semibold">Quiz #{i}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-        {/* Artikel Preview */}
-        <section className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Artikel Terbaru</h2>
-          <div className="columns-2 gap-4">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="mb-4 break-inside-avoid">
-                <Image
-                  src={`/articles/article${i}.jpg`}
-                  alt={`Cover Artikel ${i}`}
-                  width={400} height={250}
-                  className="rounded"
-                  loading="lazy"
-                />
-                <h3 className="font-semibold mt-2">Judul Artikel #{i}</h3>
-                <p className="text-sm text-gray-600">Ringkasan singkat artikel akan tampil di sini.</p>
-              </div>
-            ))}
-          </div>
-        </section>
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 w-full bg-white border-t py-2 flex justify-around">
-          <button aria-label="Beranda"><HomeIcon size={24} /></button>
-          <button aria-label="Kategori Quiz"><GridIcon size={24} /></button>
-          <button aria-label="Confess Wall"><PlusCircle size={24} /></button>
-          <button aria-label="Artikel"><FileText size={24} /></button>
-          <button aria-label="Profil"><User size={24} /></button>
-        </nav>
+        </div>
+
+        {/* 2AM Lounge */}
+        <div className="bg-gray-200 rounded-lg p-4 relative">
+          <Lock size={16} className="absolute top-2 right-2 text-gray-600" />
+          <h3 className="font-semibold text-gray-800 mb-1">2AM Lounge</h3>
+          <p className="text-sm text-gray-600">Area eksklusif akan segera hadir.</p>
+        </div>
+      </section>
+
+      {/* Artikel Terbaru Preview */}
+      <section className="px-4 mt-4">
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">Artikel Terbaru</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {articles.slice(0, 3).map((art, i) => (
+            <div key={i} className="bg-white rounded-lg overflow-hidden shadow">
+              <Image src={art.img} alt={art.title} width={120} height={80} className="object-cover w-full" />
+              <div className="p-2 text-sm font-medium text-gray-800">{art.title}</div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-center text-xs text-gray-600">Menampilkan 3 dari 6 artikel</p>
+      </section>
+
+      {/* Placeholder Fitur Berikutnya */}
+      <div className="h-20 flex items-center justify-center text-gray-400 text-sm">
+        Fitur berikutnya akan segera hadir...
       </div>
-    </>
+
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white p-3 rounded-full shadow-lg flex space-x-8">
+        <HomeIcon size={24} className="text-blue-500" aria-label="Home" />
+        <TTSIcon size={24} className="text-yellow-400" aria-label="Talk to Selfie" />
+        <Bookmark size={24} className="text-gray-600" aria-label="Bookmark" />
+        <User size={24} className="text-gray-600" aria-label="Profile" />
+      </nav>
+    </div>
   )
 }
