@@ -1,14 +1,14 @@
-// app/quiz/page.tsx (Quiz Listing Page)
-import Link from 'next/link';
-import { fetchQuizzes } from '@/lib/wpClient';
+// app/quiz/page.tsx
+import Link from 'next/link'
+import { fetchQuizzes } from '@/lib/wpClient'
 
 export const metadata = {
   title: 'Quiz – Selfify',
-  description: 'Kumpulkan quiz interaktif untuk refleksi diri dan self-discovery.',
-};
+  description: 'Kumpulan quiz interaktif untuk refleksi diri dan self-discovery.',
+}
 
 export default async function QuizPage() {
-  const quizzes = await fetchQuizzes();
+  const quizzes = await fetchQuizzes()
 
   return (
     <main className="min-h-screen bg-white p-6">
@@ -25,5 +25,5 @@ export default async function QuizPage() {
         ))}
       </div>
     </main>
-  );
+  )
 }
