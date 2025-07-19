@@ -1,29 +1,19 @@
 // app/layout.tsx
-import '../styles/globals.css';
-import BottomNav from '@/components/BottomNav';
-import dynamic from 'next/dynamic';
-import { ReactNode } from 'react';
 
-// Modal hanya client-side
-const GreetingModal = dynamic(() => import('@/components/GreetingModal'), { ssr: false });
+import "../styles/globals.css";
+import type { ReactNode } from "react";
 
-export const metadata = {
-  title: 'Selfify — Amplify Your Self',
-  description: 'Platform refleksi dan penguatan diri untuk Gen Z, Millennial, dan Gen X',
-};
+// Tidak perlu import BottomNav di layout, biar BottomNav hanya muncul di page tertentu (misal: homepage).
+// import BottomNav from "@/components/BottomNav";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
-      <body className="font-sans bg-white text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100">
-        {/* Pop-up greeting */}
-        <GreetingModal />
-
-        {/* Konten halaman */}
-        {children}
-
-        {/* Bottom navigation */}
-        <BottomNav />
+      <body className="bg-[#faf8fd] min-h-screen w-full">
+        {/* WRAPPER MAX WIDTH MOBILE */}
+        <div className="mx-auto max-w-[360px] w-full bg-[#faf8fd] min-h-screen relative">
+          {children}
+        </div>
       </body>
     </html>
   );
