@@ -5,15 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import BottomNav from '@/components/BottomNav';
 
-// Dummy avatar user aktif
-const activeAvatars = [
-  '/assets/user1.png',
-  '/assets/user2.png',
-  '/assets/user3.png',
-  '/assets/user4.png'
-];
-
-// Dummy confess list
+const activeAvatars = ['/assets/user1.png', '/assets/user2.png', '/assets/user3.png', '/assets/user4.png'];
 const confessList = [
   'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
   'Hari ini capek banget, tapi harus kuat!',
@@ -27,7 +19,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setConfessIdx(idx => (idx + 1) % confessList.length);
+      setConfessIdx((idx) => (idx + 1) % confessList.length);
     }, 3000);
     return () => clearInterval(timer);
   }, []);
@@ -44,11 +36,9 @@ export default function HomePage() {
       {/* CONFESS WALL */}
       <div className="relative px-4">
         <div className="rounded-3xl bg-yellow-100 p-6 pt-8 shadow-md">
-          {/* CONFESS TEXT */}
           <p className="text-center text-[1.25rem] font-bold text-gray-800 leading-snug">
             &quot;{confessList[confessIdx]}&quot;
           </p>
-          {/* AVATAR LIST */}
           <div className="flex items-center justify-start gap-0 mt-4 ml-2">
             {activeAvatars.map((src, i) => (
               <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow -ml-2 first:ml-0">
@@ -56,7 +46,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          {/* BUTTON CONFESS WALL */}
           <button
             onClick={() => router.push('/confess')}
             className="absolute right-5 bottom-5 bg-white px-4 py-2 rounded-2xl shadow border border-yellow-200 text-yellow-500 font-bold text-sm hover:bg-yellow-50 active:scale-95 transition"
@@ -161,3 +150,5 @@ export default function HomePage() {
         <BottomNav />
       </div>
     </main>
+  );
+}
