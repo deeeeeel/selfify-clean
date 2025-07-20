@@ -5,13 +5,13 @@ import BottomNav from '@/components/BottomNav';
 
 // Dummy confess list
 const confessList = [
-  'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
-  'Hari ini capek banget, tapi harus kuat!',
   'Kadang butuh ruang buat dengerin diri sendiri.',
+  'Hari ini capek banget, tapi harus kuat!',
+  'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
   'Ternyata curhat random bisa bikin lega!'
 ];
 
-// format date
+// tanggal Indonesia
 function getTanggalIndonesia() {
   const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
   const hari  = ["Mgg","Sen","Sel","Rab","Kam","Jum","Sab"];
@@ -23,10 +23,10 @@ export default function HomePage() {
   const [confessIdx, setConfessIdx] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const t = setInterval(() => {
       setConfessIdx(i => (i + 1) % confessList.length);
-    }, 3000); // ganti confess tiap 3 detik
-    return () => clearInterval(timer);
+    }, 3000);
+    return () => clearInterval(t);
   }, []);
 
   return (
@@ -45,14 +45,15 @@ export default function HomePage() {
 
       {/* CONFESS WALL */}
       <div className="w-[95%] relative bg-yellow-100 rounded-3xl shadow-md mb-6">
-        <div className="overflow-hidden rounded-3xl p-6 pt-8 pb-16 min-h-[140px]">
+        {/* viewport untuk satu confess */}
+        <div className="overflow-hidden rounded-3xl h-[140px]">
           <div
-            className="transition-transform duration-500"
+            className="transition-transform duration-500 ease-in-out"
             style={{ transform: `translateY(-${confessIdx * 140}px)` }}
           >
             {confessList.map((text, i) => (
-              <div key={i} className="h-[140px] flex items-center">
-                <p className="mx-auto text-center text-gray-800 font-bold text-lg leading-snug">
+              <div key={i} className="h-[140px] flex items-center justify-center px-4">
+                <p className="text-center text-gray-800 font-bold text-lg leading-snug">
                   “{text}”
                 </p>
               </div>
@@ -61,15 +62,13 @@ export default function HomePage() {
         </div>
         <button
           className="absolute right-4 bottom-4 bg-white border border-yellow-200 text-yellow-600 font-semibold text-sm px-4 py-1 rounded-full shadow"
-          onClick={() => alert('Direct to /confess')}
+          onClick={() => window.location.href = '/confess'}
         >
           Confess Wall
         </button>
       </div>
 
-      {/* …Quiz Populer, grid cards, Artikel Terbaru (tidak berubah)… */}
-
-      {/* BOTTOM NAV */}
+      {/* …Quiz Populer, grid cards, Artikel Terbaru, BottomNav … */}
       <div className="fixed left-0 right-0 bottom-4 flex justify-center">
         <BottomNav />
       </div>
