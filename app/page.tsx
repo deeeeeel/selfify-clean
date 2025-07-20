@@ -66,33 +66,44 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Confess Wall Card */}
-      <div className="w-[90%] mt-4 relative">
-        <div className="bg-yellow-100 rounded-3xl p-6 shadow-md">
-          {/* Slider Text */}
-          <div className="text-center text-gray-800 font-bold text-base leading-snug min-h-[60px]">
-            "{confessList[confessIdx]}"
+      // di dalam app/page.tsx, ganti bagian CONFESS WALL dengan ini:
+
+{/* CONFESS WALL */}
+<div className="relative px-4">
+  {/* Outer card */}
+  <div className="rounded-3xl bg-yellow-100 p-5 shadow-md">
+    {/* Container viewport untuk slider */}
+    <div className="h-32 overflow-hidden">
+      {/* Inner slider: bergeser secara vertikal */}
+      <div
+        className="transition-transform duration-500"
+        style={{ transform: `translateY(-${confessIdx * 100}%)` }}
+      >
+        {confessList.map((msg, i) => (
+          <div
+            key={i}
+            className="mb-4 bg-white rounded-xl p-4 shadow flex items-start gap-3"
+          >
+            {/* Avatar placeholder */}
+            <div className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0" />
+            {/* Pesan */}
+            <p className="flex-1 text-gray-800 font-medium leading-snug">
+              "{msg}"
+            </p>
           </div>
-          {/* Avatars */}
-          <div className="flex -space-x-2 justify-start mt-4">
-            {activeAvatars.map((src, i) => (
-              <div
-                key={i}
-                className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow"
-              >
-                <Image src={src} width={32} height={32} alt={`avatar-${i}`} />
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Confess Wall Button */}
-        <button
-          className="absolute bottom-2 right-2 bg-white px-3 py-1.5 rounded-full shadow border border-yellow-200 text-yellow-600 font-semibold text-sm hover:bg-yellow-50 active:scale-95 transition"
-          onClick={() => alert('Fitur input confess coming soon')}
-        >
-          Confess Wall
-        </button>
+        ))}
       </div>
+    </div>
+
+    {/* Tombol Confess Wall */}
+    <button
+      onClick={() => alert('Fitur input confess coming soon')}
+      className="absolute right-6 bottom-6 bg-white px-4 py-2 rounded-2xl shadow border border-yellow-200 text-yellow-500 font-bold text-sm hover:bg-yellow-50 active:scale-95 transition"
+    >
+      Confess Wall
+    </button>
+  </div>
+</div>
 
       {/* Quiz Populer */}
       <div className="w-full px-4 mt-6">
