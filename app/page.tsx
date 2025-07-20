@@ -65,9 +65,7 @@ export default function HomePage() {
           {getTanggalIndonesia()}
         </div>
       </div>
-
-      // di dalam app/page.tsx, ganti bagian CONFESS WALL dengan ini:
-
+      
 {/* CONFESS WALL */}
 <div className="relative px-4">
   {/* Outer card */}
