@@ -1,4 +1,3 @@
-cat > app/api/confess/route.ts << 'EOF'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Sementara simpan di memory. Untuk production, ganti dengan DB.
@@ -22,4 +21,3 @@ export async function POST(req: NextRequest) {
   if (confessions.length > 20) confessions.pop();
   return NextResponse.json({ ok: true });
 }
-EOF
