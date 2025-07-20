@@ -1,32 +1,71 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import BottomNav from '@/components/BottomNav';
+import React, { useState, useEffect } from 'react'
+import useSWR from 'swr'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import BottomNav from '@/components/BottomNav'
+
+const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export default function HomePage() {
-  // daftar confess yang akan di-slide
+  const router = useRouter()
+
   const confessList = [
     'Gue lagi down, tapi tetep semangat. #SelfifyConfess',
     'Hari ini capek banget, tapi harus kuat!',
     'Kadang butuh ruang buat dengerin diri sendiri.',
     'Ternyata curhat random bisa bikin lega!'
-  ];
+  ]
 
-  // confess slider state
-  const [confessIdx, setConfessIdx] = useState(0);
+  const [confessIdx, setConfessIdx] = useState(0)
+  const [showComments, setShowComments] = useState(false)
+  const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
-    // auto slider setiap 3 detik
     const timer = setInterval(() => {
-      setConfessIdx(i => (i + 1) % confessList.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [confessList.length]);
+      setConfessIdx(i => (i + 1) % confessList.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [confessList.length])
+
+  const currentId = confessIdx.toString()
+
+  const { data: likeData, mutate: mutateLikes } = useSWR(
+    `/api/confess/${currentId}/like`, fetcher, { refreshInterval: 5000 }
+  )
+  const { data: comments, mutate: mutateComments } = useSWR(
+    `/api/confess/${currentId}/comment`, fetcher
+  )
+
+  const handleLike = async () => {
+    await fetch(`/api/confess/${currentId}/like`, { method: 'POST' })
+    mutateLikes()
+  }
+
+  const handleComment = async (text: string) => {
+    if (!text.trim()) return
+    await fetch(`/api/confess/${currentId}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    })
+    setNewComment('')
+    mutateComments()
+  }
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: 'Confess Selfify', url: window.location.href })
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      alert('Link copied!')
+    }
+  }
 
   return (
     <main className="flex flex-col items-center bg-[#FCFAFF] min-h-screen py-4" style={{ maxWidth: 360, margin: '0 auto' }}>
-      {/* Header tanggal dengan notifikasi */}
+      {/* Header */}
       <div className="w-full px-4 flex items-center justify-between pb-2">
         <div className="text-gray-500 font-semibold text-sm">
           Minggu, 20 Juli 2025
@@ -39,23 +78,61 @@ export default function HomePage() {
         </button>
       </div>
 
-      {/* Confess Wall Card */}
+      {/* Confess Wall */}
       <div className="w-[95%] relative rounded-3xl bg-yellow-100 shadow-md px-6 pt-8 pb-8 mb-6 flex flex-col justify-between">
-        {/* Confess Slider */}
         <div className="w-full min-h-[60px] flex items-center justify-center px-2">
-          <span className="text-[1.3rem] font-bold text-gray-800 leading-snug text-center select-none">
+          <span className="text-[1.2rem] font-bold text-gray-800 leading-snug text-center select-none">
             &quot;{confessList[confessIdx]}&quot;
           </span>
         </div>
 
-        {/* Tombol “Confess Wall” di pojok kanan bawah */}
+        <div className="flex items-center gap-4 mt-4">
+          <button onClick={handleLike} className="flex items-center gap-1 text-red-500">
+            ❤️ <span className="font-medium">{likeData?.likes ?? 0}</span>
+          </button>
+          <button onClick={() => setShowComments(true)} className="text-gray-600">🗨️</button>
+          <button onClick={handleShare} className="text-gray-600">🔗</button>
+        </div>
+
+        {/* Sekarang navigasi ke /confess */}
         <button
           className="absolute right-6 bottom-6 bg-white px-3 py-1 rounded-2xl shadow border border-yellow-200 text-yellow-500 font-bold text-sm hover:bg-yellow-100 active:scale-95 transition"
-          onClick={() => alert('Fitur input confess coming soon')}
+          onClick={() => router.push('/confess')}
         >
           Confess Wall
         </button>
       </div>
+
+      {/* Modal Komentar */}
+      {showComments && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50">
+          <div className="bg-white w-full max-h-1/2 rounded-t-3xl p-4 overflow-auto">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-bold text-lg">Komentar</h3>
+              <button onClick={() => setShowComments(false)}>✖️</button>
+            </div>
+            <div className="space-y-2">
+              {comments?.map((c: any) => (
+                <div key={c.id} className="p-2 bg-gray-100 rounded">{c.text}</div>
+              )) || <p className="text-gray-500">Belum ada komentar.</p>}
+            </div>
+            <div className="flex gap-2 mt-4">
+              <input
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                className="flex-1 p-2 border rounded"
+                placeholder="Tulis komentar..."
+              />
+              <button
+                onClick={() => handleComment(newComment)}
+                className="px-4 bg-blue-600 text-white rounded"
+              >
+                Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quiz Populer */}
       <div className="w-full px-4 mb-6">
