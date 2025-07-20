@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* hide scrollbar (for quiz & confess slider) */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-body {
-  @apply bg-white text-gray-900 antialiased;
-  font-family: 'Trebuchet MS', sans-serif;
+/* sembunyikan scrollbar WebKit */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* sembunyikan scrollbar Firefox/IE */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
