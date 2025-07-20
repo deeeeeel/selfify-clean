@@ -13,8 +13,8 @@ const confessList = [
 
 // format date
 function getTanggalIndonesia() {
-  const bulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-  const hari = ["Mgg","Sen","Sel","Rab","Kam","Jum","Sab"];
+  const bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  const hari  = ["Mgg","Sen","Sel","Rab","Kam","Jum","Sab"];
   const d = new Date();
   return `${hari[d.getDay()]}, ${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
 }
@@ -25,7 +25,7 @@ export default function HomePage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setConfessIdx(i => (i + 1) % confessList.length);
-    }, 3000);
+    }, 3000); // ganti confess tiap 3 detik
     return () => clearInterval(timer);
   }, []);
 
@@ -45,7 +45,6 @@ export default function HomePage() {
 
       {/* CONFESS WALL */}
       <div className="w-[95%] relative bg-yellow-100 rounded-3xl shadow-md mb-6">
-        {/* vertical slider window */}
         <div className="overflow-hidden rounded-3xl p-6 pt-8 pb-16 min-h-[140px]">
           <div
             className="transition-transform duration-500"
@@ -60,17 +59,15 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        {/* Confess button */}
         <button
           className="absolute right-4 bottom-4 bg-white border border-yellow-200 text-yellow-600 font-semibold text-sm px-4 py-1 rounded-full shadow"
-          onClick={() => alert('Direct to /confess page')}
+          onClick={() => alert('Direct to /confess')}
         >
           Confess Wall
         </button>
       </div>
 
-      {/* (other sections unchanged…) */}
-      {/* …Quiz Populer, grid cards, artikel grid, etc. */}
+      {/* …Quiz Populer, grid cards, Artikel Terbaru (tidak berubah)… */}
 
       {/* BOTTOM NAV */}
       <div className="fixed left-0 right-0 bottom-4 flex justify-center">
