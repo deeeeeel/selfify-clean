@@ -1,5 +1,6 @@
 // File: app/confess/page.tsx
-// Deskripsi: Halaman penuh “Confess Wall” versi mobile-app view, dengan Header (tanggal + audio player) dan Bottom Nav
+// Deskripsi: Halaman penuh “Confess Wall” (mobile-app view) menampilkan semua confess dummy beserta modal komentar.
+// Pastikan return JSX berada di dalam function dan file ini mengimpor Header & BottomNav.
 
 'use client';
 
@@ -16,12 +17,12 @@ export default function ConfessWallPage() {
 
   return (
     <>
-      {/* Header: Tanggal + Chill Mode Player + Bell */}
+      {/* 1. Header: Tanggal + Chill Mode Player + Bell */}
       <AudioHeader />
 
-      {/* Konten Utama */}
+      {/* 2. Konten Utama */}
       <main className="pt-4 pb-24 bg-[#F4F6FA] px-2 max-w-[360px] mx-auto min-h-screen">
-        {/* Judul & Link Buat Confess Baru */}
+        {/* Judul & link ke form baru */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-black">Confess Wall</h1>
           <Link
@@ -32,7 +33,7 @@ export default function ConfessWallPage() {
           </Link>
         </div>
 
-        {/* Daftar Semua Confess */}
+        {/* Daftar semua confess */}
         <div className="space-y-4">
           {dummyConfess.map((c) => (
             <ConfessCard
@@ -41,14 +42,13 @@ export default function ConfessWallPage() {
               text={c.text}
               love={c.love}
               like={c.like}
-              comments={c.comment}
+              comments={c.comments}
               onComment={() => setActiveCommentId(c.id)}
-              /* showLink default = false */
             />
           ))}
         </div>
 
-        {/* Modal Komentar */}
+        {/* Modal komentar */}
         {activeCommentId !== null && (
           <CommentModal
             confessId={activeCommentId}
@@ -57,7 +57,7 @@ export default function ConfessWallPage() {
         )}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* 3. Bottom Navigation */}
       <BottomNav />
     </>
   );
