@@ -17,7 +17,10 @@ export default function ConfessInputPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) return alert('Confess tidak boleh kosong!');
+    if (!text.trim()) {
+      alert('Confess tidak boleh kosong!');
+      return;
+    }
     // Dummy save
     console.log({ text, alter });
     setSubmitted(true);
@@ -51,7 +54,7 @@ export default function ConfessInputPage() {
               text={c.text}
               love={c.love}
               like={c.like}
-              comments={c.comments}    // <-- perbaikan: gunakan 'comments'
+              comments={c.comments}
               onComment={() => {}}
               showLink={false}
             />
@@ -60,6 +63,7 @@ export default function ConfessInputPage() {
 
         {/* Form Input Confess */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Textarea Confess */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Cerita Kamu (max 200 karakter)
@@ -72,11 +76,10 @@ export default function ConfessInputPage() {
               className="w-full p-3 rounded-xl border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
               placeholder="Tulis pengakuanmu di sini..."
             />
-            <div className="text-right text-xs text-gray-500 mt-1">
-              {text.length}/200
-            </div>
+            <div className="text-right text-xs text-gray-500 mt-1">{text.length}/200</div>
           </div>
 
+          {/* Input Alter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nama Alter (opsional)
@@ -90,12 +93,11 @@ export default function ConfessInputPage() {
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className={`w-full py-3 rounded-xl font-bold transition ${
-              submitted
-                ? 'bg-green-500 text-white cursor-default'
-                : 'bg-black text-white hover:bg-gray-800'
+              submitted ? 'bg-green-500 text-white cursor-default' : 'bg-black text-white hover:bg-gray-800'
             }`}
             disabled={submitted}
           >
