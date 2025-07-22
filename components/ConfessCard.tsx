@@ -11,6 +11,9 @@ export type ConfessCardProps = {
   like: number;
   comments: number;
   onComment: () => void;
+  showLink?: boolean;         // <--- tambahkan props ini
+  linkLabel?: string;         // opsional, default 'Confess Wall'
+  linkHref?: string;          // opsional, default '/confess'
 };
 
 export default function ConfessCard({ id, text, love, like, comments, onComment }: ConfessCardProps) {
