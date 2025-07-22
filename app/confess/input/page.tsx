@@ -1,5 +1,5 @@
 // File: app/confess/input/page.tsx
-// Deskripsi: Halaman Input Confess versi mobile-app view, lengkap dengan Header (tanggal + audio player) dan Bottom Nav
+// Deskripsi: Halaman Input Confess versi mobile-app view, lengkap dengan Header dan Bottom Nav
 
 'use client';
 
@@ -17,10 +17,7 @@ export default function ConfessInputPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) {
-      alert('Confess tidak boleh kosong!');
-      return;
-    }
+    if (!text.trim()) return alert('Confess tidak boleh kosong!');
     // Dummy save
     console.log({ text, alter });
     setSubmitted(true);
@@ -42,7 +39,7 @@ export default function ConfessInputPage() {
             ← Kembali
           </Link>
           <h1 className="text-2xl font-bold text-black">Buat Confess Baru</h1>
-          <div className="w-6" /> {/* spacer */}
+          <div className="w-6" />
         </div>
 
         {/* Preview 3 Confess Terbaru */}
@@ -54,7 +51,7 @@ export default function ConfessInputPage() {
               text={c.text}
               love={c.love}
               like={c.like}
-              comments={c.comment}
+              comments={c.comments}    // <-- perbaikan: gunakan 'comments'
               onComment={() => {}}
               showLink={false}
             />
@@ -63,7 +60,6 @@ export default function ConfessInputPage() {
 
         {/* Form Input Confess */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Textarea Confess */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Cerita Kamu (max 200 karakter)
@@ -81,7 +77,6 @@ export default function ConfessInputPage() {
             </div>
           </div>
 
-          {/* Input Alter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nama Alter (opsional)
@@ -95,7 +90,6 @@ export default function ConfessInputPage() {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className={`w-full py-3 rounded-xl font-bold transition ${
