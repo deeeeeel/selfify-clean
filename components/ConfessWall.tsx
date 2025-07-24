@@ -24,9 +24,9 @@ export default function ConfessWall() {
   return (
     <div className="relative max-w-[360px] mx-auto mb-6">
       {/* Background charcoal */}
-      <div className="bg-[#23272F] rounded-3xl shadow-xl pt-8 pb-16 px-0 relative min-h-[180px] overflow-visible">
+      <div className="bg-[#23272F] rounded-3xl shadow-xl pt-8 pb-16 px-0 relative min-h-[180px] overflow-visible -mt-1">
         {/* Card putih */}
-        <div className="absolute left-3 right-3 -top-8 z-20 bg-white rounded-2xl shadow-lg px-6 py-8 text-center">
+        <div className="absolute left-1 right-1 top-1 z-0 bg-white rounded-3xl shadow-lg px-6 py-8 text-center">
           <p className="italic text-lg text-black font-['Trebuchet_MS']">"{text}"</p>
         </div>
 
