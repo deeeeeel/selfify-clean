@@ -11,7 +11,7 @@ export default function HomeMiddleSection() {
       {/* Kolom Kiri */}
       <div className="flex flex-col gap-3">
         <BizBoostCard />
-        <MoodQuotesCard />
+        <MoodQuotesCard src="/images/moodquotes/mq1.svg" alt="Mood Quote 1" />
       </div>
       {/* Kolom Kanan */}
       <div className="flex flex-col gap-3">
