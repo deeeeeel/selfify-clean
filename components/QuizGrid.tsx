@@ -1,43 +1,76 @@
 'use client';
 
 import Link from 'next/link';
-import { FaHeart } from 'react-icons/fa';
 
-// Dummy: array jumlah user untuk masing-masing kategori (atau bisa satu angka aja buat semua)
-const quizCategories = [
-  { name: 'Mental Health', users: 180 },
-  { name: 'Survive Mode', users: 140 },
-  { name: 'Character Scan', users: 97 },
-  { name: 'Relationship Decode', users: 122 },
-  { name: 'Self Reflection', users: 110 },
-  { name: 'Momomoney', users: 99 },
-  { name: 'Life Phase Tracker', users: 88 },
-  { name: 'Gen Lo, Gen Gue', users: 74 },
-  { name: 'Move On Meter', users: 81 },
+const quizCategoriesReview = [
+  {
+    name: 'Survive Mode',
+    percent: 86,
+    description: 'orang salah menjawab pertanyaan ini di interview',
+  },
+  {
+    name: 'Mental Health',
+    percent: 72,
+    description: 'orang bingung dengan soal self–check ini',
+  },
+  {
+    name: 'Character Scan',
+    percent: 64,
+    description: 'orang gagal identifikasi trait diri mereka',
+  },
+  {
+    name: 'Relationship Decode',
+    percent: 81,
+    description: 'orang sulit pilih jawaban tentang komunikasi',
+  },
+  {
+    name: 'Self Reflection',
+    percent: 75,
+    description: 'orang ragu menyelami pikiran sendiri',
+  },
+  {
+    name: 'Momomoney',
+    percent: 90,
+    description: 'orang takut ambil keputusan keuangan ekstra',
+  },
+  {
+    name: 'Life Phase Tracker',
+    percent: 68,
+    description: 'orang bingung menghadapi fase hidup baru',
+  },
+  {
+    name: 'Move On Meter',
+    percent: 55,
+    description: 'orang kesulitan move on dari masa lalu',
+  },
 ];
 
 export default function QuizGrid() {
   return (
-    <div className="max-w-[360px] mx-auto mb-8">
-      <h2 className="font-['Trebuchet_MS'] text-base font-bold text-black mb-2 text-center tracking-wide"></h2>
-      <div className="grid grid-cols-3 gap-2">
-        {quizCategories.map((cat) => (
-          <Link
-            key={cat.name}
-            href={`/quiz?q=${encodeURIComponent(cat.name)}`}
-            className="relative block text-center text-sm font-semibold font-['Trebuchet_MS'] text-white bg-[#23272F] rounded-2xl py-4 px-2 shadow"
-            style={{ minHeight: 60, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            {/* Icon hati + jumlah user pojok kiri atas */}
-            <span className="absolute left-2 top-2 flex items-center gap-1 text-xs text-pink-400">
-              <FaHeart className="text-pink-400" size={13} />
-              <span className="text-[10px] text-gray-200 font-bold">{cat.users}</span>
-            </span>
-            {/* Nama kategori quiz */}
-            <span className="w-full text-center leading-[1.05]">{cat.name}</span>
-          </Link>
-        ))}
+    <section className="px-4">
+      <h3 className="max-w-md mx-auto mb-2 text-base font-medium text-center">
+        Quiz Snapshot Review
+      </h3>
+      <div className="max-w-md mx-auto overflow-x-auto no-scrollbar">
+        <div className="flex space-x-3 pb-2">
+          {quizCategoriesReview.map((cat) => (
+            <div
+              key={cat.name}
+              className="min-w-[160px] bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm"
+            >
+              <p className="text-lg font-semibold text-gray-900">
+                {cat.name}
+              </p>
+              <p className="mt-3 text-4xl font-bold text-gray-900">
+                {cat.percent}%
+              </p>
+              <p className="mt-1 text-sm text-gray-600 leading-snug">
+                {cat.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
