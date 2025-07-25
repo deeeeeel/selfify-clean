@@ -1,44 +1,43 @@
-// app/artikel/page.tsx
-export const dynamic = 'force-dynamic';
-import Link from 'next/link'
-import Image from 'next/image'
-import { fetchArticles } from '@/lib/wpClient'
+// File: app/artikel/page.jsx
+'use client';
 
-export const metadata = {
-  title: 'Artikel – Selfify',
-  description: 'Daftar artikel Selfify yang bisa kamu jelajahi untuk refleksi diri.',
-}
+import { useEffect, useState } from 'react';
+import ArtikelList from '@/components/ArtikelList';
+import Link from 'next/link';
 
-export default async function ArtikelPage() {
-  const articles = await fetchArticles()
+export default function ArtikelPage() {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch('https://cms.selfify.id/wp-json/wp/v2/posts?_embed');
+        const data = await res.json();
+        setArticles(data);
+      } catch (error) {
+        console.error('Gagal ambil artikel:', error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
-    <main className="min-h-screen bg-white p-6">
-      <h1 className="text-3xl font-bold mb-6">Artikel Terbaru</h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {articles.map((art: any) => (
-          <Link
-            key={art.slug}
-            href={`/artikel/${art.slug}`}
-            className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
-          >
-            {art.featuredImage?.node?.sourceUrl && (
-              <Image
-                src={art.featuredImage.node.sourceUrl}
-                alt={art.title}
-                width={400}
-                height={250}
-                className="w-full object-cover"
-                unoptimized
+    <div className="max-w-[360px] mx-auto px-4 py-4 text-white">
+      <h1 className="text-xl font-bold mb-4 text-center">Artikel Selfify</h1>
+      <div className="space-y-4">
+        {articles.map((item) => (
+          <Link href={`/artikel/${item.slug}`} key={item.id}>
+            <a>
+              <ArtikelList
+                title={item.title.rendered}
+                thumbnail={item._embedded?.['wp:featuredmedia']?.[0]?.source_url}
+                excerpt={item.excerpt.rendered.replace(/<[^>]+>/g, '')}
               />
-            )}
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{art.title}</h2>
-              <p className="text-gray-600 text-sm line-clamp-3">{art.excerpt}</p>
-            </div>
+            </a>
           </Link>
         ))}
       </div>
-    </main>
-  )
+    </div>
+  );
 }
