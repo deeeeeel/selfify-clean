@@ -28,13 +28,13 @@ export default function ArtikelPage() {
       <div className="space-y-4">
         {articles.map((item) => (
           <Link href={`/artikel/${item.slug}`} key={item.id}>
-            <a>
-              <ArtikelList
-                title={item.title.rendered}
-                thumbnail={item._embedded?.['wp:featuredmedia']?.[0]?.source_url}
-                excerpt={item.excerpt.rendered.replace(/<[^>]+>/g, '')}
-              />
-            </a>
+
+            <ArtikelList
+              title={item.title.rendered}
+              thumbnail={item._embedded?.['wp:featuredmedia']?.[0]?.source_url}
+              excerpt={item.excerpt.rendered.replace(/<[^>]+>/g, '')}
+            />
+
           </Link>
         ))}
       </div>

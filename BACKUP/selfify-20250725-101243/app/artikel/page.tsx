@@ -21,7 +21,7 @@ export default async function ArtikelPage() {
             key={art.slug}
             href={`/artikel/${art.slug}`}
             className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
-          >
+            legacyBehavior>
             {art.featuredImage?.node?.sourceUrl && (
               <Image
                 src={art.featuredImage.node.sourceUrl}
@@ -40,5 +40,5 @@ export default async function ArtikelPage() {
         ))}
       </div>
     </main>
-  )
+  );
 }
