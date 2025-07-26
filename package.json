@@ -8,9 +8,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ai": "^4.3.19",
+    "@apollo/client": "^3.13.8",
+    "ai": "^3.0.0",
     "autoprefixer": "^10.4.14",
     "classnames": "^2.3.2",
+    "graphql": "^16.11.0",
+    "lucide-react": "^0.525.0",
     "next": "13.5.11",
     "openai": "^4.26.1",
     "postcss": "^8.4.24",
@@ -22,6 +25,7 @@
     "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
+    "@types/react": "19.1.8",
     "eslint": "8.45.0",
     "eslint-config-next": "13.5.11"
   }
