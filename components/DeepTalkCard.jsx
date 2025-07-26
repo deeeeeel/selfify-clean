@@ -1,20 +1,24 @@
 'use client';
 
-import { MessageSquare } from 'lucide-react';
+import Link from 'next/link';
+import { MessageCircle } from 'lucide-react';
 
 export default function DeepTalkCard() {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col items-start gap-3 hover:border-zinc-700 transition-colors">
-      <div className="flex items-center justify-between w-full">
-        <h3 className="text-lg font-bold text-white">Deep Talk</h3>
-        <MessageSquare size={20} className="text-yellow-400" />
+    <div className="bg-zinc-800 text-white rounded-3xl p-5 shadow-md mb-6 font-[Satoshi]">
+      <div className="flex items-center gap-3 mb-4">
+        <MessageCircle className="text-yellow-400" size={24} />
+        <h2 className="text-lg font-bold text-yellow-400">Deep Talk</h2>
       </div>
-      <p className="text-sm text-zinc-400 leading-snug">
-        Tempat buat lo ngobrol jujur, tanpa takut dihakimi. Tumpahin semua isi kepala lo di sini.
+      <p className="text-sm text-zinc-300 mb-4">
+        Tempat curhat paling aman bareng Selfie. Lo bisa cerita, tanya arah hidup, atau sekadar ngobrol soal keresahan tengah malam.
       </p>
-      <button className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-full text-sm self-start mt-2">
-        Lets Talks,
-      </button>
+      <Link
+        href="/deep-talk"
+        className="block w-full text-center bg-yellow-400 text-black font-bold py-2 rounded-full hover:bg-yellow-300 transition"
+      >
+        Let's Talk
+      </Link>
     </div>
   );
 }

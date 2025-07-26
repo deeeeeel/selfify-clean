@@ -1,8 +1,7 @@
-// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true, // ⬅️ Tambahin ini
+  images: {
+    domains: ['cms.selfify.id'],
   },
 }
 
