@@ -1,6 +1,6 @@
 'use server';
 
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { OpenAIStream, StreamingTextResponse } from 'ai/respoders';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
