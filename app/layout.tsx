@@ -1,7 +1,7 @@
 // app/layout.tsx
 'use client';
 
-import './globals.css';
+import './styles/globals.css';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
 
