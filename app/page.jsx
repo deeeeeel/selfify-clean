@@ -11,6 +11,8 @@ import CollabsWallCard from '@/components/CollabsWallCard';
 import BizBoostCard from '@/components/BizBoostCard';
 import ArticlePreviewSection from '@/components/ArticlePreviewSection';
 import BottomNav from '@/components/BottomNav';
+import SelfieAssistant from '@/components/chat/SelfieAssistant';
+import SelfieChatUI from '@/components/chat/SelfieChatUI';
 
 export default function HomePage() {
   return (
@@ -69,8 +71,9 @@ export default function HomePage() {
         <section className="mb-6">
           <ArticlePreviewSection />
         </section>
+        <SelfieChatUI />
+<SelfieAssistant />
       </main>
-
       {/* Sticky BottomNav */}
       <BottomNav />
     </div>
