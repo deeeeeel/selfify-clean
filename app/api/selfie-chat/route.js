@@ -1,11 +1,12 @@
 // app/api/selfie-chat/route.js
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+
+import { OpenAIStream, streamToResponse } from 'ai';
 import OpenAI from 'openai';
 
-export const runtime = 'edge'; // Optional: disarankan oleh Next.js untuk route API
+export const runtime = 'edge'; // Disarankan oleh Next.js untuk API route streaming
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Pastikan key-nya ada di .env.local
+  apiKey: process.env.OPENAI_API_KEY, // Pastikan ada di .env.local
 });
 
 export async function POST(req) {
@@ -18,5 +19,5 @@ export async function POST(req) {
   });
 
   const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return streamToResponse(stream); // Ganti dari StreamingTextResponse → streamToResponse
 }

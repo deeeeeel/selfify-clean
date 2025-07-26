@@ -21,7 +21,7 @@ export default function SelfieChatUI() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/selfie", {
+      const res = await fetch("/api/selfie-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages }),
