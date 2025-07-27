@@ -1,12 +1,17 @@
 'use client';
 
-import ConfessWall from '@/components/ConfessWall';
+import ConfessLounge from '@/components/confess/ConfessLounge';
+import MusicPlayer from '@/components/MusicPlayer';
+import BottomNav from '@/components/BottomNav';
 
 export default function ConfessPage() {
   return (
-    <main className="max-w-[360px] mx-auto px-4 py-6 bg-black text-white font-[Satoshi] min-h-screen">
-      <h1 className="text-lg font-bold mb-4">Confess Wall</h1>
-      <ConfessWall />
-    </main>
+    <div className="max-w-[360px] mx-auto text-white font-[Satoshi]">
+      <MusicPlayer />
+      
+      <ConfessLounge />
+
+      <BottomNav />
+    </div>
   );
 }

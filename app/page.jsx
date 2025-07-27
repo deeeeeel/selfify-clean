@@ -1,7 +1,7 @@
 'use client';
 
 import MusicPlayer from '@/components/MusicPlayer';
-import ConfessWall from '@/components/ConfessWall';
+import ConfessWall from '@/components/confess/ConfessWall';
 import QuotesMoodSlider from '@/components/QuotesMoodSlider';
 import TwoAmLounge from '@/components/TwoAmLounge';
 import QuizSnapshot from '@/components/QuizSnapshot';
